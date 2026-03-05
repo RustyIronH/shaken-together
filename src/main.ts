@@ -1,14 +1,19 @@
+import { Events } from 'matter-js';
 import { createPhysicsEngine, startEngine } from './physics/engine';
 import { createScene, setDollCount, applyMode, resetScene } from './physics/world';
 import { createPixiRenderer } from './renderer/pixi-renderer';
 import type { PixiRenderer } from './renderer/pixi-renderer';
 import { createRagdollSprite, destroyRagdollSprite } from './renderer/ragdoll-sprite';
 import type { RagdollSprite } from './renderer/ragdoll-sprite';
-import { ALL_CHARACTER_IDS } from './renderer/character-registry';
+import { ALL_CHARACTER_IDS, getCharacter } from './renderer/character-registry';
+import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
 import { createPanel } from './ui/panel';
 import { createHamburger } from './ui/hamburger';
+import { applySquashStretch } from './renderer/effects/squash-stretch';
+import { createSpeedLinePool, updateSpeedLines } from './renderer/effects/speed-lines';
+import { createImpactFlashPool, spawnImpactFlash, updateImpactFlashes } from './renderer/effects/impact-flash';
 import type { SceneState, CharacterId } from './types';
 
 /** Tracks character assignment index for no-duplicate cycling */
@@ -103,18 +108,88 @@ function syncSprites(
   // 8. Start physics engine (fixed timestep via Matter.Runner)
   startEngine(engine);
 
-  // 9. Track which ragdoll IDs are currently being dragged (for z-order)
+  // 9. Create effect pools
+  const flashPool = createImpactFlashPool(renderer.effectsLayer, 8);
+  const speedLinePool = createSpeedLinePool(renderer.effectsLayer, 20);
+
+  // 10. Face expression state: ragdollId -> { expression, timer }
+  const faceStates = new Map<string, { expression: FaceExpression; timer: number }>();
+
+  /**
+   * Finds which ragdoll owns a body by checking all ragdoll body maps.
+   */
+  function findRagdollIdForBody(bodyId: number): string | null {
+    for (const ragdoll of scene.ragdolls) {
+      for (const b of ragdoll.bodies.values()) {
+        if (b.id === bodyId) return ragdoll.id;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Sets a ragdoll's face expression with a timer.
+   * The ticker will revert to 'neutral' when the timer expires.
+   */
+  function setFaceExpression(ragdollId: string, expression: FaceExpression, durationMs: number): void {
+    const sprite = spriteMap.get(ragdollId);
+    if (!sprite) return;
+
+    const ragdoll = scene.ragdolls.find((r) => r.id === ragdollId);
+    if (!ragdoll) return;
+
+    const character = getCharacter(ragdoll.characterId);
+    const ctx = character.faceExpressions.get(expression);
+    if (ctx) {
+      sprite.headGraphic.context = ctx;
+    }
+
+    faceStates.set(ragdollId, { expression, timer: durationMs });
+  }
+
+  // 11. Collision event handler: impact flashes + face expressions
+  Events.on(engine, 'collisionStart', (event) => {
+    for (const pair of event.pairs) {
+      // Calculate impact force from relative velocity (not pair.normalImpulse -- unreliable)
+      const relVelX = pair.bodyA.velocity.x - pair.bodyB.velocity.x;
+      const relVelY = pair.bodyA.velocity.y - pair.bodyB.velocity.y;
+      const force = Math.sqrt(relVelX * relVelX + relVelY * relVelY);
+
+      if (force <= 3) continue;
+
+      // Spawn impact flash at collision midpoint
+      const cx = (pair.bodyA.position.x + pair.bodyB.position.x) / 2;
+      const cy = (pair.bodyA.position.y + pair.bodyB.position.y) / 2;
+      spawnImpactFlash(flashPool, cx, cy, force);
+
+      // Face expressions on hard impacts
+      if (force > 5) {
+        const ragdollIdA = findRagdollIdForBody(pair.bodyA.id);
+        const ragdollIdB = findRagdollIdForBody(pair.bodyB.id);
+
+        const expression: FaceExpression = force > 10 ? 'dazed' : 'surprised';
+        const duration = force > 10 ? 1500 : 800;
+
+        if (ragdollIdA) setFaceExpression(ragdollIdA, expression, duration);
+        if (ragdollIdB) setFaceExpression(ragdollIdB, expression, duration);
+      }
+    }
+  });
+
+  // 12. Track which ragdoll IDs are currently being dragged (for z-order)
   const lastDraggedIds = new Set<string>();
 
-  // 10. Ticker callback: physics-to-sprite sync + drag feedback + z-order
-  renderer.app.ticker.add(() => {
+  // 13. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
+  renderer.app.ticker.add((ticker) => {
+    const deltaMs = ticker.deltaMS;
+
     // Build set of currently dragged ragdoll IDs
     const currentDraggedIds = new Set<string>();
     for (const drag of scene.activeDrags.values()) {
       currentDraggedIds.add(drag.ragdollId);
     }
 
-    // Physics-to-sprite position sync
+    // Physics-to-sprite position sync + squash-stretch
     for (const ragdoll of scene.ragdolls) {
       const sprite = spriteMap.get(ragdoll.id);
       if (!sprite) continue;
@@ -125,6 +200,9 @@ function syncSprites(
 
         graphic.position.set(body.position.x, body.position.y);
         graphic.rotation = body.angle;
+
+        // Apply squash-and-stretch deformation based on velocity
+        applySquashStretch(graphic, body);
       }
 
       // Drag feedback: 5% scale-up on grabbed ragdoll
@@ -149,6 +227,30 @@ function syncSprites(
     lastDraggedIds.clear();
     for (const id of currentDraggedIds) {
       lastDraggedIds.add(id);
+    }
+
+    // Update speed lines
+    updateSpeedLines(speedLinePool, scene.ragdolls, spriteMap);
+
+    // Update impact flash lifetimes and alpha
+    updateImpactFlashes(flashPool, deltaMs);
+
+    // Update face expression timers
+    for (const [ragdollId, state] of faceStates) {
+      state.timer -= deltaMs;
+      if (state.timer <= 0) {
+        // Revert to neutral
+        const sprite = spriteMap.get(ragdollId);
+        const ragdoll = scene.ragdolls.find((r) => r.id === ragdollId);
+        if (sprite && ragdoll) {
+          const character = getCharacter(ragdoll.characterId);
+          const neutralCtx = character.faceExpressions.get('neutral');
+          if (neutralCtx) {
+            sprite.headGraphic.context = neutralCtx;
+          }
+        }
+        faceStates.delete(ragdollId);
+      }
     }
   });
 })();
