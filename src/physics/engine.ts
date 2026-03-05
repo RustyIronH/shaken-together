@@ -52,7 +52,7 @@ export function startEngine(engine: Engine): Runner {
   const runner = Runner.create({
     delta: FIXED_TIMESTEP,
     isFixed: true,
-  });
+  } as Parameters<typeof Runner.create>[0]);
   Runner.run(runner, engine);
   return runner;
 }

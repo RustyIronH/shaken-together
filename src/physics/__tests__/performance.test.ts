@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { Engine, Composite } from 'matter-js';
 import { createPhysicsEngine } from '../engine';
 import { createScene, setDollCount } from '../world';

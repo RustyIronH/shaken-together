@@ -1,15 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { Engine, Composite, Body } from 'matter-js';
+import { Engine, Composite } from 'matter-js';
 import { createPhysicsEngine } from '../engine';
-import { createScene, addRagdoll, removeRagdoll, setDollCount, resetScene, applyMode } from '../world';
+import { createScene, addRagdoll, removeRagdoll, setDollCount, resetScene } from '../world';
 import { _resetAngleLimitsState } from '../constraints';
 import {
-  REALISTIC_MODE,
-  GOOFY_MODE,
   DEFAULT_DOLL_COUNT,
   MIN_DOLL_COUNT,
   MAX_DOLL_COUNT,
-  BOUNDARY_THICKNESS,
 } from '../../constants';
 import type { SceneState } from '../../types';
 

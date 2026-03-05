@@ -97,7 +97,6 @@ export function enforceAngleLimits(): void {
  */
 export function updateAngleLimitsForMode(mode: PhysicsMode): void {
   for (const limit of runtimeLimits) {
-    const multiplier = mode.angleLimitMultiplier * limit.goofyMultiplier;
     // For modes other than realistic, use the individual goofyMultiplier
     if (mode.name === 'realistic') {
       limit.minAngle = limit.baseMin;
