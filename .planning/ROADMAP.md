@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - Phase 9 depends on Phase 8
 - Phase 10 depends on Phase 9
 
-- [ ] **Phase 1: Physics Simulation** - Ragdoll bodies, joints, gravity, collision, fixed-timestep game loop, two physics modes
+- [x] **Phase 1: Physics Simulation** - Ragdoll bodies, joints, gravity, collision, fixed-timestep game loop, two physics modes
 - [ ] **Phase 2: Rendering Engine** - PixiJS sprite rendering synced to physics, character sprites, mobile-first responsive canvas
 - [ ] **Phase 3: Device Input** - Shake detection via DeviceMotion, iOS permission flow, touch/drag fallback
 - [ ] **Phase 4: Screenshot Capture** - Screenshot of ragdoll positions with capture preview
@@ -46,10 +46,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 4 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Scaffold Vite project, define types/constants, create test stubs
-- [ ] 01-02-PLAN.md -- Physics engine, ragdoll factory, angle constraints, world management
-- [ ] 01-03-PLAN.md -- Debug Canvas2D renderer and multi-touch drag/fling system
-- [ ] 01-04-PLAN.md -- UI control panel, main.ts integration, human verification
+- [x] 01-01-PLAN.md -- Scaffold Vite project, define types/constants, create test stubs
+- [x] 01-02-PLAN.md -- Physics engine, ragdoll factory, angle constraints, world management
+- [x] 01-03-PLAN.md -- Debug Canvas2D renderer and multi-touch drag/fling system
+- [x] 01-04-PLAN.md -- UI control panel, main.ts integration, human verification
 
 ### Phase 2: Rendering Engine
 **Goal**: The physics simulation is visually represented with cartoon character sprites on a responsive mobile canvas
