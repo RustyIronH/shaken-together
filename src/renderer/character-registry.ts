@@ -1,5 +1,9 @@
 import type { GraphicsContext } from 'pixi.js';
 import type { CharacterId } from '../types';
+import { createSlimCharacter } from './characters/slim';
+import { createRoundCharacter } from './characters/round';
+import { createBuffCharacter } from './characters/buff';
+import { createTinyCharacter } from './characters/tiny';
 
 /** Face expression states */
 export type FaceExpression = 'neutral' | 'surprised' | 'dazed';
@@ -28,6 +32,17 @@ export const ALL_CHARACTER_IDS: CharacterId[] = ['slim', 'round', 'buff', 'tiny'
 
 /** Registry of all character definitions, populated at module load */
 export const CHARACTERS: Map<CharacterId, CharacterDefinition> = new Map();
+
+// Populate registry at module load time
+// Characters are defined once; body part GraphicsContexts are shared across instances
+const slim = createSlimCharacter();
+const round = createRoundCharacter();
+const buff = createBuffCharacter();
+const tiny = createTinyCharacter();
+CHARACTERS.set(slim.id, slim);
+CHARACTERS.set(round.id, round);
+CHARACTERS.set(buff.id, buff);
+CHARACTERS.set(tiny.id, tiny);
 
 /**
  * Retrieves a character definition by ID.
