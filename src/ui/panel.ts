@@ -1,28 +1,40 @@
-import type { PhysicsMode } from '../types';
+import type { PhysicsMode, SceneState, CharacterId } from '../types';
 import {
   REALISTIC_MODE,
   GOOFY_MODE,
   DEFAULT_DOLL_COUNT,
   MIN_DOLL_COUNT,
   MAX_DOLL_COUNT,
+  CHARACTER_IDS,
 } from '../constants';
+
+/** Display names for character IDs */
+const CHARACTER_NAMES: Record<CharacterId, string> = {
+  slim: 'Slim',
+  round: 'Round',
+  buff: 'Buff',
+  tiny: 'Tiny',
+};
 
 /** Callbacks for panel control interactions */
 export interface PanelCallbacks {
   onDollCountChange: (count: number) => void;
   onModeChange: (mode: PhysicsMode) => void;
   onReset: () => void;
+  onCharacterChange: (dollIndex: number, characterId: CharacterId) => void;
 }
 
 /** Return type for createPanel */
 export interface PanelHandle {
   element: HTMLDivElement;
   toggle: () => void;
+  updateCharacterSelectors: () => void;
 }
 
 /**
  * Creates a slide-out control panel with:
  * - Doll count selector (2-5)
+ * - Character selection dropdowns per doll
  * - Physics mode toggle (Realistic / Goofy)
  * - Reset scene button
  *
@@ -31,6 +43,7 @@ export interface PanelHandle {
 export function createPanel(
   container: HTMLElement,
   callbacks: PanelCallbacks,
+  getScene: () => SceneState,
 ): PanelHandle {
   let isOpen = false;
   let activeDollCount = DEFAULT_DOLL_COUNT;
@@ -154,6 +167,101 @@ export function createPanel(
   dollSection.appendChild(dollRow);
   panel.appendChild(dollSection);
 
+  // --- Character Selection Section ---
+  const charSection = createSection();
+  charSection.appendChild(createSectionLabel('Characters'));
+
+  const charRowsContainer = document.createElement('div');
+  Object.assign(charRowsContainer.style, {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  } as Partial<CSSStyleDeclaration>);
+
+  /**
+   * Rebuilds the character selector rows to match the current scene.
+   * Each row shows "Doll N" label and a <select> dropdown for character choice.
+   */
+  function updateCharacterSelectors(): void {
+    // Clear existing rows
+    charRowsContainer.innerHTML = '';
+
+    const scene = getScene();
+
+    for (let i = 0; i < scene.ragdolls.length; i++) {
+      const ragdoll = scene.ragdolls[i];
+
+      const row = document.createElement('div');
+      Object.assign(row.style, {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+      } as Partial<CSSStyleDeclaration>);
+
+      // Label
+      const label = document.createElement('div');
+      label.textContent = `Doll ${i + 1}`;
+      Object.assign(label.style, {
+        width: '60px',
+        fontSize: '13px',
+        color: 'rgba(255, 255, 255, 0.6)',
+        flexShrink: '0',
+      } as Partial<CSSStyleDeclaration>);
+
+      // Dropdown
+      const select = document.createElement('select');
+      Object.assign(select.style, {
+        background: 'rgba(255, 255, 255, 0.1)',
+        color: '#ffffff',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        borderRadius: '8px',
+        height: '40px',
+        fontSize: '14px',
+        padding: '0 12px',
+        width: '100%',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        cursor: 'pointer',
+        outline: 'none',
+        appearance: 'none',
+        WebkitAppearance: 'none',
+      } as Partial<CSSStyleDeclaration>);
+
+      // Add options for all characters
+      for (const charId of CHARACTER_IDS) {
+        const option = document.createElement('option');
+        option.value = charId;
+        option.textContent = CHARACTER_NAMES[charId];
+        option.selected = charId === ragdoll.characterId;
+        // Style option for dark dropdown (best-effort, browser-dependent)
+        Object.assign(option.style, {
+          background: '#1a1a2e',
+          color: '#ffffff',
+        } as Partial<CSSStyleDeclaration>);
+        select.appendChild(option);
+      }
+
+      // Capture dollIndex for closure
+      const dollIndex = i;
+      select.addEventListener('change', (e) => {
+        e.stopPropagation();
+        const newCharacterId = (e.target as HTMLSelectElement).value as CharacterId;
+        callbacks.onCharacterChange(dollIndex, newCharacterId);
+        // Refresh all selectors to reflect the swap
+        updateCharacterSelectors();
+      });
+
+      row.appendChild(label);
+      row.appendChild(select);
+      charRowsContainer.appendChild(row);
+    }
+  }
+
+  charSection.appendChild(charRowsContainer);
+  panel.appendChild(charSection);
+
+  // Build initial character selectors (will be empty until scene has ragdolls)
+  // Deferred to after scene is created via updateCharacterSelectors() call from main.ts
+
   // --- Mode Toggle Section ---
   const modeSection = createSection();
   modeSection.appendChild(createSectionLabel('Mode'));
@@ -272,5 +380,6 @@ export function createPanel(
   return {
     element: panel,
     toggle: togglePanel,
+    updateCharacterSelectors,
   };
 }

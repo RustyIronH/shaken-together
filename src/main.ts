@@ -1,11 +1,11 @@
-import { Events } from 'matter-js';
+import { Bodies, Composite, Events } from 'matter-js';
 import { createPhysicsEngine, startEngine } from './physics/engine';
 import { createScene, setDollCount, applyMode, resetScene } from './physics/world';
 import { createPixiRenderer } from './renderer/pixi-renderer';
 import type { PixiRenderer } from './renderer/pixi-renderer';
-import { createRagdollSprite, destroyRagdollSprite } from './renderer/ragdoll-sprite';
+import { createRagdollSprite, destroyRagdollSprite, swapCharacterSkin } from './renderer/ragdoll-sprite';
 import type { RagdollSprite } from './renderer/ragdoll-sprite';
-import { ALL_CHARACTER_IDS, getCharacter } from './renderer/character-registry';
+import { getCharacter } from './renderer/character-registry';
 import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
@@ -14,24 +14,13 @@ import { createHamburger } from './ui/hamburger';
 import { applySquashStretch } from './renderer/effects/squash-stretch';
 import { createSpeedLinePool, updateSpeedLines } from './renderer/effects/speed-lines';
 import { createImpactFlashPool, spawnImpactFlash, updateImpactFlashes } from './renderer/effects/impact-flash';
+import { BOUNDARY_THICKNESS } from './constants';
 import type { SceneState, CharacterId } from './types';
-
-/** Tracks character assignment index for no-duplicate cycling */
-let characterCycleIndex = 0;
-
-/**
- * Assigns a character ID cycling through ALL_CHARACTER_IDS
- * to avoid duplicates until all 4 are used.
- */
-function nextCharacterId(): CharacterId {
-  const id = ALL_CHARACTER_IDS[characterCycleIndex % ALL_CHARACTER_IDS.length];
-  characterCycleIndex++;
-  return id;
-}
 
 /**
  * Syncs the spriteMap to match the current scene ragdolls.
- * Creates sprites for new ragdolls, removes sprites for deleted ones.
+ * Creates sprites for new ragdolls (using their world-assigned characterId),
+ * removes sprites for deleted ones.
  */
 function syncSprites(
   scene: SceneState,
@@ -50,16 +39,50 @@ function syncSprites(
     }
   }
 
-  // Create sprites for new ragdolls
+  // Create sprites for new ragdolls (characterId assigned by world.ts)
   for (const ragdoll of scene.ragdolls) {
     if (!spriteMap.has(ragdoll.id)) {
-      const characterId = nextCharacterId();
-      ragdoll.characterId = characterId;
-      const sprite = createRagdollSprite(characterId, ragdoll.id);
+      const sprite = createRagdollSprite(ragdoll.characterId, ragdoll.id);
       ragdollLayer.addChild(sprite.container);
       spriteMap.set(ragdoll.id, sprite);
     }
   }
+}
+
+/**
+ * Recreates the 4 boundary walls to match current screen dimensions.
+ * Removes all existing static boundary bodies and adds new ones.
+ */
+function updateBoundaries(engine: import('matter-js').Engine, width: number, height: number): void {
+  // Remove existing boundary bodies
+  const allBodies = Composite.allBodies(engine.world);
+  for (const body of allBodies) {
+    if (body.label === 'boundary') {
+      Composite.remove(engine.world, body);
+    }
+  }
+
+  // Create new boundaries matching new dimensions
+  const t = BOUNDARY_THICKNESS;
+  const options = {
+    isStatic: true,
+    render: { visible: false },
+    label: 'boundary',
+  };
+
+  const walls = [
+    Bodies.rectangle(width / 2, -t / 2, width + t * 2, t, options),
+    Bodies.rectangle(width / 2, height + t / 2, width + t * 2, t, options),
+    Bodies.rectangle(-t / 2, height / 2, t, height, options),
+    Bodies.rectangle(width + t / 2, height / 2, t, height, options),
+  ];
+
+  for (const wall of walls) {
+    wall.restitution = 0.5;
+    wall.friction = 0.3;
+  }
+
+  Composite.add(engine.world, walls);
 }
 
 (async () => {
@@ -72,12 +95,10 @@ function syncSprites(
   // 3. Create scene using PixiJS screen dimensions (CSS pixels with autoDensity)
   const scene = createScene(engine, renderer.app.screen.width, renderer.app.screen.height);
 
-  // 4. Create sprite map and initial sprites
+  // 4. Create sprite map and initial sprites (characterId already assigned by world.ts)
   const spriteMap = new Map<string, RagdollSprite>();
   for (const ragdoll of scene.ragdolls) {
-    const characterId = nextCharacterId();
-    ragdoll.characterId = characterId;
-    const sprite = createRagdollSprite(characterId, ragdoll.id);
+    const sprite = createRagdollSprite(ragdoll.characterId, ragdoll.id);
     renderer.ragdollLayer.addChild(sprite.container);
     spriteMap.set(ragdoll.id, sprite);
   }
@@ -85,34 +106,83 @@ function syncSprites(
   // 5. Set up multi-touch drag on the new PixiJS canvas
   setupMultiTouch(renderer.app.canvas as HTMLCanvasElement, engine, scene);
 
-  // 6. Get UI root for panel/hamburger
+  // 6. Ensure touch-action: none on the canvas for mobile
+  (renderer.app.canvas as HTMLCanvasElement).style.touchAction = 'none';
+
+  // 7. Get UI root for panel/hamburger
   const uiRoot = document.getElementById('ui-root') as HTMLDivElement;
 
-  // 7. Create UI controls
-  const panel = createPanel(uiRoot, {
-    onDollCountChange: (count) => {
-      setDollCount(engine, scene, count, renderer.app.screen.width, renderer.app.screen.height);
-      syncSprites(scene, spriteMap, renderer.ragdollLayer);
+  // 8. Create UI controls with character change callback
+  const panel = createPanel(
+    uiRoot,
+    {
+      onDollCountChange: (count) => {
+        setDollCount(engine, scene, count, renderer.app.screen.width, renderer.app.screen.height);
+        syncSprites(scene, spriteMap, renderer.ragdollLayer);
+        panel.updateCharacterSelectors();
+      },
+      onModeChange: (mode) => {
+        applyMode(engine, scene, mode);
+      },
+      onReset: () => {
+        resetScene(engine, scene, renderer.app.screen.width, renderer.app.screen.height);
+        // No sprite sync needed -- positions are updated by the ticker
+      },
+      onCharacterChange: (dollIndex: number, characterId: CharacterId) => {
+        const ragdoll = scene.ragdolls[dollIndex];
+        if (!ragdoll) return;
+
+        // Check if another doll already has this character (swap behavior)
+        const otherIndex = scene.ragdolls.findIndex(
+          (r, i) => i !== dollIndex && r.characterId === characterId,
+        );
+
+        if (otherIndex !== -1) {
+          // Swap: the other doll gets the current doll's old character
+          const otherRagdoll = scene.ragdolls[otherIndex];
+          const oldCharacterId = ragdoll.characterId;
+
+          // Update the other doll
+          otherRagdoll.characterId = oldCharacterId;
+          const otherSprite = spriteMap.get(otherRagdoll.id);
+          if (otherSprite) {
+            swapCharacterSkin(otherSprite, oldCharacterId);
+          }
+        }
+
+        // Update the selected doll
+        ragdoll.characterId = characterId;
+        const sprite = spriteMap.get(ragdoll.id);
+        if (sprite) {
+          swapCharacterSkin(sprite, characterId);
+        }
+      },
     },
-    onModeChange: (mode) => {
-      applyMode(engine, scene, mode);
-    },
-    onReset: () => {
-      resetScene(engine, scene, renderer.app.screen.width, renderer.app.screen.height);
-      // No sprite sync needed -- positions are updated by the ticker
-    },
-  });
+    () => scene,
+  );
+
+  // Initialize character selectors now that scene has ragdolls
+  panel.updateCharacterSelectors();
 
   createHamburger(uiRoot, () => panel.toggle());
 
-  // 8. Start physics engine (fixed timestep via Matter.Runner)
+  // 9. Start physics engine (fixed timestep via Matter.Runner)
   startEngine(engine);
 
-  // 9. Create effect pools
+  // 10. Responsive resize: update physics boundaries on window resize
+  // PixiJS handles canvas resize via resizeTo: window, but physics boundaries
+  // must also update to match the new screen dimensions.
+  window.addEventListener('resize', () => {
+    const w = renderer.app.screen.width;
+    const h = renderer.app.screen.height;
+    updateBoundaries(engine, w, h);
+  });
+
+  // 11. Create effect pools
   const flashPool = createImpactFlashPool(renderer.effectsLayer, 8);
   const speedLinePool = createSpeedLinePool(renderer.effectsLayer, 20);
 
-  // 10. Face expression state: ragdollId -> { expression, timer }
+  // 12. Face expression state: ragdollId -> { expression, timer }
   const faceStates = new Map<string, { expression: FaceExpression; timer: number }>();
 
   /**
@@ -147,7 +217,7 @@ function syncSprites(
     faceStates.set(ragdollId, { expression, timer: durationMs });
   }
 
-  // 11. Collision event handler: impact flashes + face expressions
+  // 13. Collision event handler: impact flashes + face expressions
   Events.on(engine, 'collisionStart', (event) => {
     for (const pair of event.pairs) {
       // Calculate impact force from relative velocity (not pair.normalImpulse -- unreliable)
@@ -176,10 +246,10 @@ function syncSprites(
     }
   });
 
-  // 12. Track which ragdoll IDs are currently being dragged (for z-order)
+  // 14. Track which ragdoll IDs are currently being dragged (for z-order)
   const lastDraggedIds = new Set<string>();
 
-  // 13. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
+  // 15. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
   renderer.app.ticker.add((ticker) => {
     const deltaMs = ticker.deltaMS;
 
