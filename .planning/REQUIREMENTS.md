@@ -24,9 +24,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Rendering
 
-- [ ] **RNDR-01**: Ragdolls render as cartoon character sprites (3-4 pre-made characters)
+- [x] **RNDR-01**: Ragdolls render as cartoon character sprites (3-4 pre-made characters)
 - [ ] **RNDR-02**: User can choose which cartoon characters to use before shaking
-- [ ] **RNDR-03**: Canvas renders at 60fps with WebGL acceleration on mobile browsers
+- [x] **RNDR-03**: Canvas renders at 60fps with WebGL acceleration on mobile browsers
 
 ### Capture
 
@@ -59,7 +59,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **PLAT-01**: App works as a PWA installable from mobile browser
 - [ ] **PLAT-02**: App is available as a side-loaded Android APK
-- [ ] **PLAT-03**: Mobile-first responsive layout (portrait primary)
+- [x] **PLAT-03**: Mobile-first responsive layout (portrait primary)
 
 ### Legal/Infra
 
@@ -117,10 +117,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PHYS-04 | Phase 1: Physics Simulation | Complete |
 | PHYS-05 | Phase 1: Physics Simulation | Complete |
 | PHYS-06 | Phase 1: Physics Simulation | Complete |
-| RNDR-01 | Phase 2: Rendering Engine | Pending |
+| RNDR-01 | Phase 2: Rendering Engine | Complete |
 | RNDR-02 | Phase 2: Rendering Engine | Pending |
-| RNDR-03 | Phase 2: Rendering Engine | Pending |
-| PLAT-03 | Phase 2: Rendering Engine | Pending |
+| RNDR-03 | Phase 2: Rendering Engine | Complete |
+| PLAT-03 | Phase 2: Rendering Engine | Complete |
 | INPT-01 | Phase 3: Device Input | Pending |
 | INPT-02 | Phase 3: Device Input | Pending |
 | INPT-03 | Phase 3: Device Input | Pending |
