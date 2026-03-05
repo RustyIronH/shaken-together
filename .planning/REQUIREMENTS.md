@@ -111,45 +111,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PHYS-01 | TBD | Pending |
-| PHYS-02 | TBD | Pending |
-| PHYS-03 | TBD | Pending |
-| PHYS-04 | TBD | Pending |
-| PHYS-05 | TBD | Pending |
-| PHYS-06 | TBD | Pending |
-| INPT-01 | TBD | Pending |
-| INPT-02 | TBD | Pending |
-| INPT-03 | TBD | Pending |
-| RNDR-01 | TBD | Pending |
-| RNDR-02 | TBD | Pending |
-| RNDR-03 | TBD | Pending |
-| CAPT-01 | TBD | Pending |
-| CAPT-02 | TBD | Pending |
-| CAPT-03 | TBD | Pending |
-| CAPT-04 | TBD | Pending |
-| SHAR-01 | TBD | Pending |
-| SHAR-02 | TBD | Pending |
-| ACCT-01 | TBD | Pending |
-| ACCT-02 | TBD | Pending |
-| ACCT-03 | TBD | Pending |
-| GLRY-01 | TBD | Pending |
-| GLRY-02 | TBD | Pending |
-| GLRY-03 | TBD | Pending |
-| GLRY-04 | TBD | Pending |
-| GLRY-05 | TBD | Pending |
-| GLRY-06 | TBD | Pending |
-| PLAT-01 | TBD | Pending |
-| PLAT-02 | TBD | Pending |
-| PLAT-03 | TBD | Pending |
-| INFR-01 | TBD | Pending |
-| INFR-02 | TBD | Pending |
-| INFR-03 | TBD | Pending |
+| PHYS-01 | Phase 1: Physics Simulation | Pending |
+| PHYS-02 | Phase 1: Physics Simulation | Pending |
+| PHYS-03 | Phase 1: Physics Simulation | Pending |
+| PHYS-04 | Phase 1: Physics Simulation | Pending |
+| PHYS-05 | Phase 1: Physics Simulation | Pending |
+| PHYS-06 | Phase 1: Physics Simulation | Pending |
+| RNDR-01 | Phase 2: Rendering Engine | Pending |
+| RNDR-02 | Phase 2: Rendering Engine | Pending |
+| RNDR-03 | Phase 2: Rendering Engine | Pending |
+| PLAT-03 | Phase 2: Rendering Engine | Pending |
+| INPT-01 | Phase 3: Device Input | Pending |
+| INPT-02 | Phase 3: Device Input | Pending |
+| INPT-03 | Phase 3: Device Input | Pending |
+| CAPT-01 | Phase 4: Screenshot Capture | Pending |
+| CAPT-04 | Phase 4: Screenshot Capture | Pending |
+| CAPT-02 | Phase 5: Replay Clips + Sharing | Pending |
+| CAPT-03 | Phase 5: Replay Clips + Sharing | Pending |
+| SHAR-01 | Phase 5: Replay Clips + Sharing | Pending |
+| SHAR-02 | Phase 5: Replay Clips + Sharing | Pending |
+| INFR-01 | Phase 6: Infrastructure + Legal | Pending |
+| INFR-02 | Phase 6: Infrastructure + Legal | Pending |
+| INFR-03 | Phase 6: Infrastructure + Legal | Pending |
+| ACCT-01 | Phase 7: User Accounts | Pending |
+| ACCT-02 | Phase 7: User Accounts | Pending |
+| ACCT-03 | Phase 7: User Accounts | Pending |
+| GLRY-01 | Phase 8: Gallery Core | Pending |
+| GLRY-02 | Phase 8: Gallery Core | Pending |
+| GLRY-03 | Phase 8: Gallery Core | Pending |
+| GLRY-04 | Phase 9: Gallery Social | Pending |
+| GLRY-05 | Phase 9: Gallery Social | Pending |
+| GLRY-06 | Phase 9: Gallery Social | Pending |
+| PLAT-01 | Phase 10: PWA + Android APK | Pending |
+| PLAT-02 | Phase 10: PWA + Android APK | Pending |
 
 **Coverage:**
 - v1 requirements: 33 total
-- Mapped to phases: 0
-- Unmapped: 33
+- Mapped to phases: 33
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-05*
-*Last updated: 2026-03-05 after initial definition*
+*Last updated: 2026-03-05 after roadmap creation*
