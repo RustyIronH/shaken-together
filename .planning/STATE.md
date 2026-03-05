@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-05T04:24:44Z"
-last_activity: 2026-03-05 -- Plan 02-01 complete (PixiJS rendering foundation)
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-05T04:31:38Z"
+last_activity: 2026-03-05 -- Plan 02-02 complete (PixiJS integration and visual effects)
 progress:
   total_phases: 10
   completed_phases: 1
-  total_plans: 5
-  completed_plans: 5
-  percent: 12
+  total_plans: 6
+  completed_plans: 6
+  percent: 14
 ---
 
 # Project State
@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-03-05)
 ## Current Position
 
 Phase: 2 of 10 (Rendering Engine)
-Plan: 1 complete, advancing to next
+Plan: 2 complete, advancing to next
 Status: Executing
-Last activity: 2026-03-05 -- Plan 02-01 complete (PixiJS rendering foundation)
+Last activity: 2026-03-05 -- Plan 02-02 complete (PixiJS integration and visual effects)
 
-Progress: [█░░░░░░░░░] 12%
+Progress: [█░░░░░░░░░] 14%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 4min
-- Total execution time: 0.35 hours
+- Total execution time: 0.42 hours
 
 **By Phase:**
 
@@ -48,9 +48,10 @@ Progress: [█░░░░░░░░░] 12%
 | 01 | P03 | 3min | 2 | 5 |
 | 01 | P04 | 3min | 3 | 8 |
 | 02 | P01 | 5min | 3 | 12 |
+| 02 | P02 | 4min | 2 | 6 |
 
 **Recent Trend:**
-- Last 5 plans: 6min, 3min, 3min, 5min
+- Last 5 plans: 3min, 3min, 5min, 4min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -79,6 +80,11 @@ Recent decisions affecting current work:
 - [Phase 02]: characterId added to RagdollInstance with default='slim' for backward compatibility
 - [Phase 02]: Face expressions as separate GraphicsContexts for cheap head context swap
 - [Phase 02]: Characters defined at module load time; shared GraphicsContexts never destroyed during gameplay
+- [Phase 02]: screenToWorld simplified to CSS-pixel offset subtraction for PixiJS autoDensity compatibility
+- [Phase 02]: Z-order in ticker via container reordering (drag-manager decoupled from PixiJS)
+- [Phase 02]: Impact force from relative velocity (not pair.normalImpulse) per Research Pitfall 6
+- [Phase 02]: Face expression timers in main.ts ticker (surprised=800ms, dazed=1500ms)
+- [Phase 02]: Speed lines check only 6 of 15 body parts per ragdoll for performance
 
 ### Pending Todos
 
@@ -92,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T04:24:44Z
-Stopped at: Completed 02-01-PLAN.md
-Resume file: .planning/phases/02-rendering-engine/02-01-SUMMARY.md
+Last session: 2026-03-05T04:31:38Z
+Stopped at: Completed 02-02-PLAN.md
+Resume file: .planning/phases/02-rendering-engine/02-02-SUMMARY.md
