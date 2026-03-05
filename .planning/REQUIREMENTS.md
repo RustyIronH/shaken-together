@@ -25,7 +25,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Rendering
 
 - [x] **RNDR-01**: Ragdolls render as cartoon character sprites (3-4 pre-made characters)
-- [ ] **RNDR-02**: User can choose which cartoon characters to use before shaking
+- [x] **RNDR-02**: User can choose which cartoon characters to use before shaking
 - [x] **RNDR-03**: Canvas renders at 60fps with WebGL acceleration on mobile browsers
 
 ### Capture
@@ -118,7 +118,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PHYS-05 | Phase 1: Physics Simulation | Complete |
 | PHYS-06 | Phase 1: Physics Simulation | Complete |
 | RNDR-01 | Phase 2: Rendering Engine | Complete |
-| RNDR-02 | Phase 2: Rendering Engine | Pending |
+| RNDR-02 | Phase 2: Rendering Engine | Complete |
 | RNDR-03 | Phase 2: Rendering Engine | Complete |
 | PLAT-03 | Phase 2: Rendering Engine | Complete |
 | INPT-01 | Phase 3: Device Input | Pending |
