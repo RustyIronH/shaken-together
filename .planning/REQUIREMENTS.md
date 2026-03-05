@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Physics
 
-- [ ] **PHYS-01**: User sees 2-5 cartoon ragdoll characters on screen with realistic joint constraints, gravity, and collision
+- [x] **PHYS-01**: User sees 2-5 cartoon ragdoll characters on screen with realistic joint constraints, gravity, and collision
 - [ ] **PHYS-02**: User can select how many dolls (2-5) appear on screen
 - [ ] **PHYS-03**: User can switch between Realistic mode (proper joints, mass, damping) and Goofy mode (bouncy, stretchy, over-the-top)
-- [ ] **PHYS-04**: Physics simulation runs at consistent 60fps on mid-range mobile devices
+- [x] **PHYS-04**: Physics simulation runs at consistent 60fps on mid-range mobile devices
 - [ ] **PHYS-05**: User can reset the scene to start fresh with new doll positions
 - [ ] **PHYS-06**: User can touch/drag individual ragdolls to manually position them
 
@@ -111,10 +111,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PHYS-01 | Phase 1: Physics Simulation | Pending |
+| PHYS-01 | Phase 1: Physics Simulation | Complete |
 | PHYS-02 | Phase 1: Physics Simulation | Pending |
 | PHYS-03 | Phase 1: Physics Simulation | Pending |
-| PHYS-04 | Phase 1: Physics Simulation | Pending |
+| PHYS-04 | Phase 1: Physics Simulation | Complete |
 | PHYS-05 | Phase 1: Physics Simulation | Pending |
 | PHYS-06 | Phase 1: Physics Simulation | Pending |
 | RNDR-01 | Phase 2: Rendering Engine | Pending |
