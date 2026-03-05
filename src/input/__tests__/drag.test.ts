@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { Engine, Bodies, Body, Composite, Query } from 'matter-js';
+import { Engine, Bodies, Composite, Query } from 'matter-js';
 import {
   calculateReleaseVelocity,
   trackPosition,
@@ -9,7 +9,7 @@ import {
   screenToWorld,
 } from '../drag-manager';
 import type { SceneState, VelocityTracker } from '../../types';
-import { REALISTIC_MODE, FLING_VELOCITY_SCALE } from '../../constants';
+import { REALISTIC_MODE } from '../../constants';
 import { createRagdoll } from '../../physics/ragdoll';
 
 describe('Multi-Touch Drag', () => {
