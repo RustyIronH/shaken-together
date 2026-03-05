@@ -12,12 +12,11 @@ Shaking the phone must feel satisfying and the ragdolls must land in funny, shar
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Physics ragdoll simulation with cartoon characters (2-5 dolls, user-chosen count) — Phase 1
+- ✓ Two physics modes: realistic ragdoll (proper joints, gravity) and exaggerated/goofy (bouncy, stretchy, over-the-top) — Phase 1
 
 ### Active
 
-- [ ] Physics ragdoll simulation with cartoon characters (2-5 dolls, user-chosen count)
-- [ ] Two physics modes: realistic ragdoll (proper joints, gravity) and exaggerated/goofy (bouncy, stretchy, over-the-top)
 - [ ] Device motion shake detection that moves dolls based on phone movement
 - [ ] Screenshot capture of current ragdoll positions
 - [ ] Short replay clip capture (last few seconds of shaking as GIF/video)
@@ -63,6 +62,9 @@ Shaking the phone must feel satisfying and the ragdolls must land in funny, shar
 | Required accounts | Need identity for gallery ratings; prevents spam | — Pending |
 | Public gallery over friends-only | More viral potential, more content to browse | — Pending |
 | 1-5 star ratings | Simple, universally understood, sortable | — Pending |
+| Matter.js for physics | Works well for 2D ragdolls; 60fps with 5 dolls achievable | Validated Phase 1 |
+| 15-body ragdoll with 14 joints | Complete articulated figure; ankleR added for symmetry | Validated Phase 1 |
+| Inline CSS for debug UI | Self-contained; easy to replace when PixiJS renderer arrives in Phase 2 | Validated Phase 1 |
 
 ---
-*Last updated: 2026-03-05 after initialization*
+*Last updated: 2026-03-05 after Phase 1*
