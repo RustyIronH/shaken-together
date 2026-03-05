@@ -77,11 +77,14 @@ describe('Ragdoll Factory', () => {
 
     it('uses rectangle shape for torso and limbs', () => {
       const upperTorso = ragdoll.bodies.get('upperTorso')!;
-      // Rectangle bodies don't have circleRadius
-      expect(upperTorso.circleRadius).toBeUndefined();
+      // Rectangle bodies have circleRadius of 0 in Matter.js
+      expect(upperTorso.circleRadius).toBeFalsy();
+      // But they have vertices forming a rectangle (4 vertices)
+      expect(upperTorso.vertices.length).toBe(4);
 
       const upperArmL = ragdoll.bodies.get('upperArmL')!;
-      expect(upperArmL.circleRadius).toBeUndefined();
+      expect(upperArmL.circleRadius).toBeFalsy();
+      expect(upperArmL.vertices.length).toBe(4);
     });
 
     it('supports small, medium, and large size variants', () => {
@@ -176,19 +179,19 @@ describe('Angle Constraints', () => {
     Composite.add(engine.world, ragdoll.composite);
     registerAngleLimits(engine, ragdoll);
 
-    // Force the head to an extreme angle
+    // ANGLE_LIMITS[0]: bodyA=head, bodyB=upperTorso, min=-0.5, max=0.5
+    // relativeAngle = bodyB.angle - bodyA.angle = upperTorso.angle - head.angle
+    // Set head=0, upperTorso=3.0 => relativeAngle = 3.0, exceeds max 0.5
     const head = ragdoll.bodies.get('head')!;
     const upperTorso = ragdoll.bodies.get('upperTorso')!;
 
-    // Set head angle way past the limit (limit is -0.5 to 0.5 from upperTorso)
-    Body.setAngle(upperTorso, 0);
-    Body.setAngle(head, 3.0);
+    Body.setAngle(head, 0);
+    Body.setAngle(upperTorso, 3.0);
 
-    // Run enforce
     enforceAngleLimits();
 
-    // Head angle should be clamped
-    const relativeAngle = head.angle - upperTorso.angle;
+    // upperTorso (bodyB) should be clamped to head.angle + maxAngle = 0 + 0.5
+    const relativeAngle = upperTorso.angle - head.angle;
     expect(relativeAngle).toBeLessThanOrEqual(0.5 + 0.01);
   });
 
@@ -197,16 +200,20 @@ describe('Angle Constraints', () => {
     Composite.add(engine.world, ragdoll.composite);
     registerAngleLimits(engine, ragdoll);
 
+    // ANGLE_LIMITS[0]: bodyA=head, bodyB=upperTorso, min=-0.5, max=0.5
+    // relativeAngle = bodyB.angle - bodyA.angle
+    // Set head=0, upperTorso=3.0 => relativeAngle = 3.0, exceeds max 0.5
+    // bodyB (upperTorso) gets clamped
     const head = ragdoll.bodies.get('head')!;
     const upperTorso = ragdoll.bodies.get('upperTorso')!;
 
-    Body.setAngle(upperTorso, 0);
-    Body.setAngle(head, 3.0);
-    Body.setAngularVelocity(head, 5.0);
+    Body.setAngle(head, 0);
+    Body.setAngle(upperTorso, 3.0);
+    Body.setAngularVelocity(upperTorso, 5.0);
 
     enforceAngleLimits();
 
-    expect(head.angularVelocity).toBe(0);
+    expect(upperTorso.angularVelocity).toBe(0);
   });
 
   it('updates angle limits for goofy mode', () => {
