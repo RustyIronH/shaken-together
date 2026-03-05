@@ -43,11 +43,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can switch between Realistic mode (natural weight, damping) and Goofy mode (bouncy, stretchy, exaggerated) and see an obvious difference in how ragdolls behave
   4. Physics runs at a stable 60fps on a mid-range mobile device without ragdolls exploding or passing through walls
   5. User can reset the scene to get fresh random positions, and can touch/drag individual ragdolls to reposition them
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Scaffold Vite project, define types/constants, create test stubs
+- [ ] 01-02-PLAN.md -- Physics engine, ragdoll factory, angle constraints, world management
+- [ ] 01-03-PLAN.md -- Debug Canvas2D renderer and multi-touch drag/fling system
+- [ ] 01-04-PLAN.md -- UI control panel, main.ts integration, human verification
 
 ### Phase 2: Rendering Engine
 **Goal**: The physics simulation is visually represented with cartoon character sprites on a responsive mobile canvas
@@ -181,7 +183,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Physics Simulation | 0/0 | Not started | - |
+| 1. Physics Simulation | 0/4 | Planning complete | - |
 | 2. Rendering Engine | 0/0 | Not started | - |
 | 3. Device Input | 0/0 | Not started | - |
 | 4. Screenshot Capture | 0/0 | Not started | - |
