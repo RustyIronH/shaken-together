@@ -21,7 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - Phase 10 depends on Phase 9
 
 - [x] **Phase 1: Physics Simulation** - Ragdoll bodies, joints, gravity, collision, fixed-timestep game loop, two physics modes
-- [ ] **Phase 2: Rendering Engine** - PixiJS sprite rendering synced to physics, character sprites, mobile-first responsive canvas
+- [x] **Phase 2: Rendering Engine** - PixiJS sprite rendering synced to physics, character sprites, mobile-first responsive canvas
 - [ ] **Phase 3: Device Input** - Shake detection via DeviceMotion, iOS permission flow, touch/drag fallback
 - [ ] **Phase 4: Screenshot Capture** - Screenshot of ragdoll positions with capture preview
 - [ ] **Phase 5: Replay Clips + Sharing** - Animated GIF replay recording, screenshot-or-clip chooser, Web Share API, OG meta previews
@@ -63,10 +63,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- PixiJS foundation, 4 character definitions, RagdollSprite class
-- [ ] 02-02-PLAN.md -- Renderer integration, physics-to-sprite sync, visual effects
-- [ ] 02-03-PLAN.md -- Character selection UI, assignment logic, responsive layout
-- [ ] 02-04-PLAN.md -- Human verification of rendering engine
+- [x] 02-01-PLAN.md -- PixiJS foundation, 4 character definitions, RagdollSprite class
+- [x] 02-02-PLAN.md -- Renderer integration, physics-to-sprite sync, visual effects
+- [x] 02-03-PLAN.md -- Character selection UI, assignment logic, responsive layout
+- [x] 02-04-PLAN.md -- Human verification of rendering engine
 
 ### Phase 3: Device Input
 **Goal**: Users can shake their phone to fling ragdolls around, with graceful permission handling and a fallback for users who deny motion access
@@ -186,7 +186,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Physics Simulation | 4/4 | Complete | 2026-03-05 |
-| 2. Rendering Engine | 2/4 | In Progress|  |
+| 2. Rendering Engine | 4/4 | Complete | 2026-03-05 |
 | 3. Device Input | 0/0 | Not started | - |
 | 4. Screenshot Capture | 0/0 | Not started | - |
 | 5. Replay Clips + Sharing | 0/0 | Not started | - |
