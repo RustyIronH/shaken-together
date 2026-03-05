@@ -1,0 +1,155 @@
+# Requirements: Shaken Together
+
+**Defined:** 2026-03-05
+**Core Value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Physics
+
+- [ ] **PHYS-01**: User sees 2-5 cartoon ragdoll characters on screen with realistic joint constraints, gravity, and collision
+- [ ] **PHYS-02**: User can select how many dolls (2-5) appear on screen
+- [ ] **PHYS-03**: User can switch between Realistic mode (proper joints, mass, damping) and Goofy mode (bouncy, stretchy, over-the-top)
+- [ ] **PHYS-04**: Physics simulation runs at consistent 60fps on mid-range mobile devices
+- [ ] **PHYS-05**: User can reset the scene to start fresh with new doll positions
+- [ ] **PHYS-06**: User can touch/drag individual ragdolls to manually position them
+
+### Input
+
+- [ ] **INPT-01**: User shakes phone and ragdolls respond to the motion naturally (DeviceMotion API)
+- [ ] **INPT-02**: iOS users see a pre-permission explainer before DeviceMotion permission request
+- [ ] **INPT-03**: Users who deny motion permission can still play via touch/drag fallback
+
+### Rendering
+
+- [ ] **RNDR-01**: Ragdolls render as cartoon character sprites (3-4 pre-made characters)
+- [ ] **RNDR-02**: User can choose which cartoon characters to use before shaking
+- [ ] **RNDR-03**: Canvas renders at 60fps with WebGL acceleration on mobile browsers
+
+### Capture
+
+- [ ] **CAPT-01**: User can take a screenshot of the current ragdoll positions (no UI chrome)
+- [ ] **CAPT-02**: User can capture a replay clip (last 3-5 seconds) as an animated GIF
+- [ ] **CAPT-03**: User chooses screenshot or clip when sharing
+- [ ] **CAPT-04**: Capture preview shows the result before sharing/uploading
+
+### Sharing
+
+- [ ] **SHAR-01**: User can share creation via native share sheet (Web Share API) or copy link
+- [ ] **SHAR-02**: Shared gallery links show OG meta preview images when pasted in chat/social
+
+### Accounts
+
+- [ ] **ACCT-01**: User can create an account with email and password
+- [ ] **ACCT-02**: User can log in and session persists across browser refresh
+- [ ] **ACCT-03**: User can log out from any screen
+
+### Gallery
+
+- [ ] **GLRY-01**: User can submit their screenshot or clip to the public gallery
+- [ ] **GLRY-02**: User can browse the public gallery as a grid of thumbnails
+- [ ] **GLRY-03**: User can tap a gallery item to view it full-size
+- [ ] **GLRY-04**: User can rate gallery items 1-5 stars (one rating per user per item)
+- [ ] **GLRY-05**: Gallery shows average star rating on each item
+- [ ] **GLRY-06**: Gallery can be sorted by newest, top rated, and trending
+
+### Platform
+
+- [ ] **PLAT-01**: App works as a PWA installable from mobile browser
+- [ ] **PLAT-02**: App is available as a side-loaded Android APK
+- [ ] **PLAT-03**: Mobile-first responsive layout (portrait primary)
+
+### Legal/Infra
+
+- [ ] **INFR-01**: Age gate shown before accessing the app (users must confirm 18+)
+- [ ] **INFR-02**: Terms of Service page accessible from the app
+- [ ] **INFR-03**: App hosted on content-friendly infrastructure (no mainstream provider ToS violations)
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Polish
+
+- **PLSH-01**: Sound effects on ragdoll collisions (bonks, thuds, squelches)
+- **PLSH-02**: Haptic feedback on collisions (Android via Vibration API)
+- **PLSH-03**: Slow-motion toggle during replay and live shaking
+- **PLSH-04**: Expanded character roster (8-12 pre-made characters)
+- **PLSH-05**: Themed backgrounds/environments for the shaking scene
+
+### Social
+
+- **SOCL-01**: User profiles with creation history
+- **SOCL-02**: Remix feature (shake someone else's starting position)
+- **SOCL-03**: Weekly challenges/prompts for the community
+- **SOCL-04**: Embed widget for sharing creations on external sites
+
+### Admin
+
+- **ADMN-01**: Content report button on gallery items
+- **ADMN-02**: Admin moderation dashboard for reported content
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Custom avatar/character creation | Massive art pipeline complexity, delays launch by weeks |
+| Real-time multiplayer shaking | Physics desync over network makes this impractical |
+| In-app comments/chat | Moderation burden with explicit content, legal liability |
+| AI content moderation | No training data for this domain, false positives kill the vibe |
+| Leaderboards/gamification (XP, levels) | Changes incentive from "make funny thing" to "farm points" |
+| Monetization (ads, IAP) | Validate concept first; ad networks won't serve on explicit content |
+| Native iOS app | Apple will reject explicit content immediately |
+| Desktop creation mode | Mouse-dragging ragdolls is a different product (People Playground exists) |
+| OAuth/social login | Email/password sufficient for v1, reduces third-party dependencies |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| PHYS-01 | TBD | Pending |
+| PHYS-02 | TBD | Pending |
+| PHYS-03 | TBD | Pending |
+| PHYS-04 | TBD | Pending |
+| PHYS-05 | TBD | Pending |
+| PHYS-06 | TBD | Pending |
+| INPT-01 | TBD | Pending |
+| INPT-02 | TBD | Pending |
+| INPT-03 | TBD | Pending |
+| RNDR-01 | TBD | Pending |
+| RNDR-02 | TBD | Pending |
+| RNDR-03 | TBD | Pending |
+| CAPT-01 | TBD | Pending |
+| CAPT-02 | TBD | Pending |
+| CAPT-03 | TBD | Pending |
+| CAPT-04 | TBD | Pending |
+| SHAR-01 | TBD | Pending |
+| SHAR-02 | TBD | Pending |
+| ACCT-01 | TBD | Pending |
+| ACCT-02 | TBD | Pending |
+| ACCT-03 | TBD | Pending |
+| GLRY-01 | TBD | Pending |
+| GLRY-02 | TBD | Pending |
+| GLRY-03 | TBD | Pending |
+| GLRY-04 | TBD | Pending |
+| GLRY-05 | TBD | Pending |
+| GLRY-06 | TBD | Pending |
+| PLAT-01 | TBD | Pending |
+| PLAT-02 | TBD | Pending |
+| PLAT-03 | TBD | Pending |
+| INFR-01 | TBD | Pending |
+| INFR-02 | TBD | Pending |
+| INFR-03 | TBD | Pending |
+
+**Coverage:**
+- v1 requirements: 33 total
+- Mapped to phases: 0
+- Unmapped: 33
+
+---
+*Requirements defined: 2026-03-05*
+*Last updated: 2026-03-05 after initial definition*
