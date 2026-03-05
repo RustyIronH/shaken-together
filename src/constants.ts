@@ -1,4 +1,4 @@
-import type { PhysicsMode, BodyPartConfig, JointConfig, AngleLimit, DollColorScheme, DollSize } from './types';
+import type { PhysicsMode, BodyPartConfig, JointConfig, AngleLimit, DollColorScheme, DollSize, CharacterId } from './types';
 
 // --- Physics Modes ---
 export const REALISTIC_MODE: PhysicsMode = {
@@ -104,6 +104,9 @@ export const POSITION_ITERATIONS = 6;
 export const VELOCITY_ITERATIONS = 4;
 export const FLING_VELOCITY_SCALE = 0.002;
 export const VELOCITY_SAMPLE_COUNT = 5;
+
+// --- Character IDs (physics-layer constant, avoids importing from renderer) ---
+export const CHARACTER_IDS: CharacterId[] = ['slim', 'round', 'buff', 'tiny'];
 
 // --- Background Gradient ---
 export const BG_GRADIENT_TOP = '#1a1a2e';

@@ -1,5 +1,5 @@
 import { Bodies, Body, Composite, Engine } from 'matter-js';
-import type { PhysicsMode, SceneState, RagdollInstance, DollSize } from '../types';
+import type { PhysicsMode, SceneState, RagdollInstance, DollSize, CharacterId } from '../types';
 import {
   REALISTIC_MODE,
   BOUNDARY_THICKNESS,
@@ -7,6 +7,7 @@ import {
   MIN_DOLL_COUNT,
   MAX_DOLL_COUNT,
   DOLL_COLOR_SCHEMES,
+  CHARACTER_IDS,
 } from '../constants';
 import { createRagdoll } from './ragdoll';
 import { registerAngleLimits, unregisterAngleLimits, updateAngleLimitsForMode } from './constraints';
@@ -17,6 +18,9 @@ let colorIndex = 0;
 /** Cycle of size variants for variety */
 const SIZE_CYCLE: DollSize[] = ['medium', 'small', 'large'];
 let sizeIndex = 0;
+
+/** Cycle index for character assignment (no-duplicates-until-all-used) */
+let characterIndex = 0;
 
 /**
  * Creates 4 static boundary walls (snow globe containment).
@@ -76,9 +80,10 @@ export function createScene(engine: Engine, width: number, height: number): Scen
     activeDrags: new Map(),
   };
 
-  // Reset color/size cycling
+  // Reset color/size/character cycling
   colorIndex = 0;
   sizeIndex = 0;
+  characterIndex = 0;
 
   // Add default number of ragdolls
   setDollCount(engine, scene, DEFAULT_DOLL_COUNT, width, height);
@@ -101,11 +106,31 @@ export function addRagdoll(
   const size = SIZE_CYCLE[sizeIndex % SIZE_CYCLE.length];
   sizeIndex++;
 
+  // Pick next character (no-duplicates-until-all-used)
+  const usedCharacters = new Set(scene.ragdolls.map(r => r.characterId));
+  let chosenCharacterId: CharacterId;
+
+  if (usedCharacters.size < CHARACTER_IDS.length) {
+    // Find next available character by cycling, skipping already-used IDs
+    let attempts = 0;
+    let idx = characterIndex % CHARACTER_IDS.length;
+    while (usedCharacters.has(CHARACTER_IDS[idx]) && attempts < CHARACTER_IDS.length) {
+      idx = (idx + 1) % CHARACTER_IDS.length;
+      attempts++;
+    }
+    chosenCharacterId = CHARACTER_IDS[idx];
+  } else {
+    // All 4 used (5th doll) -- allow repeat by cycling
+    chosenCharacterId = CHARACTER_IDS[characterIndex % CHARACTER_IDS.length];
+  }
+  characterIndex++;
+
   // Random position within boundaries
   const pos = randomPosition(width, height);
 
   // Create and add ragdoll
   const ragdoll = createRagdoll(pos.x, pos.y, size, colorScheme);
+  ragdoll.characterId = chosenCharacterId;
   Composite.add(engine.world, ragdoll.composite);
   registerAngleLimits(engine, ragdoll);
   scene.ragdolls.push(ragdoll);
@@ -218,4 +243,15 @@ export function applyMode(engine: Engine, scene: SceneState, mode: PhysicsMode):
 
   // Update scene state
   scene.currentMode = mode;
+}
+
+/**
+ * Returns character IDs not currently in use by any ragdoll in the scene.
+ * If all are used (e.g. 4+ dolls with 4 characters), returns the full list
+ * to allow repeats for the 5th doll.
+ */
+export function getAvailableCharacters(scene: SceneState): CharacterId[] {
+  const usedCharacters = new Set(scene.ragdolls.map(r => r.characterId));
+  const available = CHARACTER_IDS.filter(id => !usedCharacters.has(id));
+  return available.length > 0 ? available : [...CHARACTER_IDS];
 }
