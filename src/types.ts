@@ -1,5 +1,8 @@
 import type { Body, Composite, Constraint } from 'matter-js';
 
+/** Character identity (which character skin is applied) */
+export type CharacterId = 'slim' | 'round' | 'buff' | 'tiny';
+
 /** Ragdoll size variants */
 export type DollSize = 'small' | 'medium' | 'large';
 
@@ -61,6 +64,7 @@ export interface RagdollInstance {
   colorScheme: DollColorScheme;
   size: DollSize;
   id: string;  // Unique identifier
+  characterId: CharacterId;  // Which character skin is applied
 }
 
 /** Active drag state for a pointer */

@@ -1,5 +1,5 @@
 import { Bodies, Body, Composite, Constraint } from 'matter-js';
-import type { DollSize, DollColorScheme, RagdollInstance } from '../types';
+import type { DollSize, DollColorScheme, RagdollInstance, CharacterId } from '../types';
 import { REALISTIC_MODE } from '../constants';
 import { resolveRagdollConfig } from './ragdoll-config';
 
@@ -30,6 +30,7 @@ export function createRagdoll(
   y: number,
   size: DollSize,
   colorScheme: DollColorScheme,
+  characterId: CharacterId = 'slim',
 ): RagdollInstance {
   const config = resolveRagdollConfig(size);
 
@@ -115,5 +116,6 @@ export function createRagdoll(
     colorScheme,
     size,
     id,
+    characterId,
   };
 }
