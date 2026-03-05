@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-05T03:20:44.000Z"
-last_activity: 2026-03-05 -- Completed 01-02 core physics engine (ragdoll factory, constraints, world management)
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-03-05T03:29:39.044Z"
+last_activity: 2026-03-05 -- Completed 01-03 debug renderer and multi-touch drag system
 progress:
   total_phases: 10
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
-  percent: 50
+  completed_plans: 3
+  percent: 75
 ---
 
 # Project State
@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-03-05)
 ## Current Position
 
 Phase: 1 of 10 (Physics Simulation)
-Plan: 2 of 4 in current phase (01-02 complete)
+Plan: 3 of 4 in current phase (01-03 complete)
 Status: Executing
-Last activity: 2026-03-05 -- Completed 01-02 core physics engine (ragdoll factory, constraints, world management)
+Last activity: 2026-03-05 -- Completed 01-03 debug renderer and multi-touch drag system
 
-Progress: [█████░░░░░] 50%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 5min
-- Total execution time: 0.17 hours
+- Total plans completed: 3
+- Average duration: 4min
+- Total execution time: 0.22 hours
 
 **By Phase:**
 
@@ -45,9 +45,10 @@ Progress: [█████░░░░░] 50%
 |-------|------|----------|-------|-------|
 | 01 | P01 | 4min | 3 | 13 |
 | 01 | P02 | 6min | 2 | 9 |
+| 01 | P03 | 3min | 2 | 5 |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 6min
+- Last 5 plans: 4min, 6min, 3min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -67,6 +68,9 @@ Recent decisions affecting current work:
 - [Phase 01]: Manual Vite scaffold (create-vite CLI incompatible with automation)
 - [Phase 01]: Matter.js static bodies ignore restitution/friction in constructor options; must set after creation
 - [Phase 01]: Angle limits enforced via beforeUpdate hook clamping bodyB relative to bodyA; angular velocity zeroed on clamp
+- [Phase 01]: Drag constraints use render.visible=false to distinguish from joint constraints in renderer
+- [Phase 01]: Z-order via Array.splice/push on engine.world.composites for last-touched-on-top rendering
+- [Phase 01]: Velocity calculation uses first-to-last position delta with FLING_VELOCITY_SCALE for fling-on-release
 
 ### Pending Todos
 
@@ -80,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T03:20:44.000Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-05T03:29:39.042Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

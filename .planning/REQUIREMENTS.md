@@ -14,7 +14,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PHYS-03**: User can switch between Realistic mode (proper joints, mass, damping) and Goofy mode (bouncy, stretchy, over-the-top)
 - [x] **PHYS-04**: Physics simulation runs at consistent 60fps on mid-range mobile devices
 - [x] **PHYS-05**: User can reset the scene to start fresh with new doll positions
-- [ ] **PHYS-06**: User can touch/drag individual ragdolls to manually position them
+- [x] **PHYS-06**: User can touch/drag individual ragdolls to manually position them
 
 ### Input
 
@@ -116,7 +116,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PHYS-03 | Phase 1: Physics Simulation | Complete |
 | PHYS-04 | Phase 1: Physics Simulation | Complete |
 | PHYS-05 | Phase 1: Physics Simulation | Complete |
-| PHYS-06 | Phase 1: Physics Simulation | Pending |
+| PHYS-06 | Phase 1: Physics Simulation | Complete |
 | RNDR-01 | Phase 2: Rendering Engine | Pending |
 | RNDR-02 | Phase 2: Rendering Engine | Pending |
 | RNDR-03 | Phase 2: Rendering Engine | Pending |
