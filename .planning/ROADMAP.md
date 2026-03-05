@@ -60,11 +60,13 @@ Plans:
   2. User can choose which cartoon characters appear in the scene before shaking
   3. Canvas renders smoothly at 60fps with WebGL acceleration on mobile browsers (Chrome, Safari)
   4. Layout is mobile-first and responsive in portrait orientation, filling the screen appropriately on different phone sizes
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md -- PixiJS foundation, 4 character definitions, RagdollSprite class
+- [ ] 02-02-PLAN.md -- Renderer integration, physics-to-sprite sync, visual effects
+- [ ] 02-03-PLAN.md -- Character selection UI, assignment logic, responsive layout
+- [ ] 02-04-PLAN.md -- Human verification of rendering engine
 
 ### Phase 3: Device Input
 **Goal**: Users can shake their phone to fling ragdolls around, with graceful permission handling and a fallback for users who deny motion access
@@ -184,7 +186,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Physics Simulation | 4/4 | Complete | 2026-03-05 |
-| 2. Rendering Engine | 0/0 | Not started | - |
+| 2. Rendering Engine | 0/4 | Planning | - |
 | 3. Device Input | 0/0 | Not started | - |
 | 4. Screenshot Capture | 0/0 | Not started | - |
 | 5. Replay Clips + Sharing | 0/0 | Not started | - |
