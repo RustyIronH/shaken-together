@@ -1,3 +1,4 @@
+import type { Container } from 'pixi.js';
 import type { Engine } from 'matter-js';
 import type { Body } from 'matter-js';
 import type { RagdollInstance } from '../types';
@@ -13,6 +14,15 @@ export function bringToFront(engine: Engine, ragdoll: RagdollInstance): void {
     composites.splice(idx, 1);
     composites.push(ragdoll.composite);
   }
+}
+
+/**
+ * Moves a ragdoll's PixiJS container to the end of the ragdollLayer
+ * so it renders on top of all others (last child = frontmost).
+ */
+export function bringContainerToFront(ragdollLayer: Container, ragdollContainer: Container): void {
+  ragdollLayer.removeChild(ragdollContainer);
+  ragdollLayer.addChild(ragdollContainer);
 }
 
 /**

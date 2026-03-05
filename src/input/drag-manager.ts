@@ -3,8 +3,11 @@ import type { ActiveDrag, SceneState, VelocityTracker } from '../types';
 import { FLING_VELOCITY_SCALE, MAX_VELOCITY, VELOCITY_SAMPLE_COUNT } from '../constants';
 
 /**
- * Converts screen (client) coordinates to canvas world coordinates.
- * Accounts for canvas CSS vs pixel size mismatch and element offset.
+ * Converts screen (client) coordinates to world coordinates.
+ *
+ * With PixiJS autoDensity=true, stage coordinates are CSS pixels.
+ * Physics world is created with CSS pixel dimensions (app.screen.width/height).
+ * So world coords = CSS coords (no scaling needed, just offset subtraction).
  */
 export function screenToWorld(
   clientX: number,
@@ -12,11 +15,9 @@ export function screenToWorld(
   canvas: HTMLCanvasElement,
 ): { x: number; y: number } {
   const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
   return {
-    x: (clientX - rect.left) * scaleX,
-    y: (clientY - rect.top) * scaleY,
+    x: clientX - rect.left,
+    y: clientY - rect.top,
   };
 }
 
