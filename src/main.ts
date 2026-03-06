@@ -12,6 +12,8 @@ import { setupMultiTouch } from './input/multi-touch';
 import { initShake, updateGravityLerp, getShakeState } from './input/shake-manager';
 import { createShakeButton, showShakeButton } from './input/shake-button';
 import { prepareForCapture, captureScreenshots } from './capture/screenshot';
+import { createReplayBuffer, pushFrame, getOrderedFrames } from './capture/replay-buffer';
+import { encodeReplayGif } from './capture/gif-encoder';
 import { createCaptureButton, disableCaptureButton, enableCaptureButton } from './ui/capture-button';
 import { showCaptureOverlay } from './ui/capture-overlay';
 import { showOnboardingHint } from './ui/onboarding-hint';
@@ -97,6 +99,12 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
 
   // 2. Create PixiJS renderer (replaces old canvas in the DOM)
   const renderer = await createPixiRenderer();
+
+  // 2b. Create replay buffer at half resolution for smaller GIFs (~360px wide on most devices)
+  const GIF_RESOLUTION = 0.5;
+  const gifWidth = Math.round(renderer.app.screen.width * GIF_RESOLUTION);
+  const gifHeight = Math.round(renderer.app.screen.height * GIF_RESOLUTION);
+  const replayBuffer = createReplayBuffer(gifWidth, gifHeight);
 
   // 3. Create scene using PixiJS screen dimensions (CSS pixels with autoDensity)
   const scene = createScene(engine, renderer.app.screen.width, renderer.app.screen.height);
@@ -195,39 +203,63 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
 
   // 9e. Capture button: always visible, triggers freeze -> capture -> preview flow
   const captureBtn = createCaptureButton(() => {
-    // 1. Freeze physics (captured positions match what user saw)
+    // 1. Stop replay recording immediately (before physics freeze)
+    replayBuffer.recording = false;
+
+    // 2. Freeze physics
     stopEngine(runner);
 
-    // 2. Prepare: clear drags, reset sprite scales
+    // 3. Prepare: clear drags, reset sprite scales
     prepareForCapture(scene, spriteMap);
 
-    // 3. Capture both image variants (clean + effects)
+    // 4. Capture screenshot variants
     const images = captureScreenshots(renderer.app, renderer.effectsLayer);
 
-    // 4. Disable capture button during preview
+    // 5. Get last buffer frame as clip placeholder (data URL for static preview)
+    const orderedFrames = getOrderedFrames(replayBuffer);
+    let clipPlaceholder: string | null = null;
+    if (orderedFrames.length > 0) {
+      const lastFrame = orderedFrames[orderedFrames.length - 1];
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = replayBuffer.width;
+      tempCanvas.height = replayBuffer.height;
+      const ctx = tempCanvas.getContext('2d')!;
+      const imageData = new ImageData(
+        new Uint8ClampedArray(lastFrame.buffer as ArrayBuffer),
+        replayBuffer.width,
+        replayBuffer.height,
+      );
+      ctx.putImageData(imageData, 0, 0);
+      clipPlaceholder = tempCanvas.toDataURL('image/png');
+    }
+
+    // 6. Disable capture button during preview
     disableCaptureButton(captureBtn);
 
-    // 5. Show preview overlay with flash
-    showCaptureOverlay(uiRoot, images, {
-      onSave: (dataUrl: string) => {
-        // Download PNG
-        const link = document.createElement('a');
-        link.download = `shaken-together-${Date.now()}.png`;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    // 7. Show overlay with new data shape
+    const overlayHandle = showCaptureOverlay(
+      uiRoot,
+      { images, clipPlaceholder },
+      {
+        onDismiss: () => {
+          Runner.run(runner, engine);
+          enableCaptureButton(captureBtn);
+          replayBuffer.recording = true;
+        },
+      },
+    );
 
-        // Resume physics and re-enable button
-        Runner.run(runner, engine);
-        enableCaptureButton(captureBtn);
-      },
-      onDiscard: () => {
-        // Resume physics from frozen state (no reset, per locked decision)
-        Runner.run(runner, engine);
-        enableCaptureButton(captureBtn);
-      },
-    });
+    // 8. Start async GIF encoding (non-blocking)
+    if (orderedFrames.length > 0) {
+      setTimeout(() => {
+        const gifBlob = encodeReplayGif(
+          orderedFrames,
+          replayBuffer.width,
+          replayBuffer.height,
+        );
+        overlayHandle.setGifBlob(gifBlob);
+      }, 0);
+    }
   });
   uiRoot.appendChild(captureBtn);
 
@@ -311,7 +343,11 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // 14. Track which ragdoll IDs are currently being dragged (for z-order)
   const lastDraggedIds = new Set<string>();
 
-  // 15. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
+  // 15. Replay frame capture throttle (10fps)
+  const CAPTURE_INTERVAL_MS = 100; // 10fps
+  let lastCaptureTime = 0;
+
+  // 16. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
   renderer.app.ticker.add((ticker) => {
     const deltaMs = ticker.deltaMS;
 
@@ -383,6 +419,17 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
         }
         faceStates.delete(ragdollId);
       }
+    }
+
+    // Throttled replay frame capture at 10fps
+    const now = performance.now();
+    if (now - lastCaptureTime >= CAPTURE_INTERVAL_MS) {
+      lastCaptureTime = now;
+      const { pixels } = renderer.app.renderer.extract.pixels({
+        target: renderer.app.stage,
+        resolution: GIF_RESOLUTION,
+      });
+      pushFrame(replayBuffer, pixels);
     }
 
     // Gravity lerp: return to default when shake stops
