@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Composite, Sleeping } from 'matter-js';
 import type { Engine } from 'matter-js';
 import { SHAKE_CONFIG, GRAVITY_RESTING_MAGNITUDE, REALISTIC_MODE, GOOFY_MODE } from '../../constants';
@@ -152,12 +152,13 @@ describe('Shake Manager', () => {
       const engine = mockEngine(5, -3, 0.002);
       const mode = { ...REALISTIC_MODE }; // default: x=0, y=1, scale=0.001
 
-      // Run several frames of lerp
-      for (let i = 0; i < 60; i++) {
+      // Run 120 frames (~2 seconds at 60fps) of lerp
+      // With lerpSpeed=0.05: residual = initial * 0.95^120 ~ 0.2% of initial
+      for (let i = 0; i < 120; i++) {
         updateGravityLerp(engine, mode, 16.67);
       }
 
-      // After ~1 second of lerping, gravity should be close to defaults
+      // After ~2 seconds of lerping, gravity should be very close to defaults
       expect(engine.gravity.x).toBeCloseTo(mode.gravity.x, 1);
       expect(engine.gravity.y).toBeCloseTo(mode.gravity.y, 1);
       expect(engine.gravity.scale).toBeCloseTo(mode.gravity.scale, 4);
@@ -230,14 +231,31 @@ describe('Shake Manager', () => {
 
   describe('permission detection', () => {
     // Save original globals
-    const originalDeviceMotionEvent = globalThis.DeviceMotionEvent;
+    const originalDeviceMotionEvent = (globalThis as any).DeviceMotionEvent;
+    const originalWindow = (globalThis as any).window;
+
+    beforeEach(() => {
+      // Ensure window exists in Node environment for addEventListener mocking
+      if (typeof globalThis.window === 'undefined') {
+        (globalThis as any).window = {
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        };
+      }
+    });
 
     afterEach(() => {
-      // Restore
+      // Restore DeviceMotionEvent
       if (originalDeviceMotionEvent) {
         (globalThis as any).DeviceMotionEvent = originalDeviceMotionEvent;
       } else {
         delete (globalThis as any).DeviceMotionEvent;
+      }
+      // Restore window
+      if (originalWindow) {
+        (globalThis as any).window = originalWindow;
+      } else {
+        delete (globalThis as any).window;
       }
     });
 
@@ -256,17 +274,12 @@ describe('Shake Manager', () => {
       // Mock DeviceMotionEvent without requestPermission (Android)
       (globalThis as any).DeviceMotionEvent = class MockDeviceMotionEvent {};
 
-      // Mock window.addEventListener
-      const addEventSpy = vi.spyOn(window, 'addEventListener').mockImplementation(() => {});
-
       const engine = mockEngine();
       const scene = mockScene();
       const result = await initShake(engine, scene);
 
       expect(result).toBe('granted');
       expect(getShakeState().permissionState).toBe('granted');
-
-      addEventSpy.mockRestore();
     });
 
     it('initShake calls requestPermission when available and returns its result (iOS)', async () => {
@@ -276,16 +289,12 @@ describe('Shake Manager', () => {
         static requestPermission = mockRequestPermission;
       };
 
-      const addEventSpy = vi.spyOn(window, 'addEventListener').mockImplementation(() => {});
-
       const engine = mockEngine();
       const scene = mockScene();
       const result = await initShake(engine, scene);
 
       expect(mockRequestPermission).toHaveBeenCalled();
       expect(result).toBe('granted');
-
-      addEventSpy.mockRestore();
     });
   });
 });
