@@ -14,8 +14,8 @@ function fakeFrame(fillValue: number, size = 16): Uint8ClampedArray {
 
 describe('Replay Buffer', () => {
   describe('createReplayBuffer', () => {
-    it('returns a buffer with capacity 30 (10fps * 3s)', () => {
-      expect(BUFFER_CAPACITY).toBe(30);
+    it('returns a buffer with capacity 15 (5fps * 3s)', () => {
+      expect(BUFFER_CAPACITY).toBe(15);
     });
 
     it('initializes with recording=true and frameCount=0', () => {
@@ -77,7 +77,7 @@ describe('Replay Buffer', () => {
       for (let i = 0; i < BUFFER_CAPACITY + 5; i++) {
         pushFrame(buf, fakeFrame(i));
       }
-      // writeIndex should have wrapped: (30 + 5) % 30 = 5
+      // writeIndex should have wrapped: (15 + 5) % 15 = 5
       expect(buf.writeIndex).toBe(5);
     });
 
@@ -137,15 +137,15 @@ describe('Replay Buffer', () => {
     it('returns frames in correct order after wrapping', () => {
       const buf = createReplayBuffer(2, 2);
 
-      // Push 35 frames into a 30-capacity buffer
+      // Push 35 frames into a 15-capacity buffer
       for (let i = 0; i < 35; i++) {
         pushFrame(buf, fakeFrame(i));
       }
 
       const ordered = getOrderedFrames(buf);
       expect(ordered.length).toBe(BUFFER_CAPACITY);
-      // After 35 pushes, oldest surviving frame is #5, newest is #34
-      expect(ordered[0][0]).toBe(5);
+      // After 35 pushes, oldest surviving frame is #20, newest is #34
+      expect(ordered[0][0]).toBe(20);
       expect(ordered[ordered.length - 1][0]).toBe(34);
     });
 
@@ -165,9 +165,9 @@ describe('Replay Buffer', () => {
       const ordered = getOrderedFrames(buf);
       expect(ordered.length).toBe(BUFFER_CAPACITY);
       // writeIndex wrapped to 0, but since frameCount == capacity and writeIndex == 0,
-      // ordered should be [0..29] in order
+      // ordered should be [0..14] in order
       expect(ordered[0][0]).toBe(0);
-      expect(ordered[29][0]).toBe(29);
+      expect(ordered[BUFFER_CAPACITY - 1][0]).toBe(BUFFER_CAPACITY - 1);
     });
   });
 

@@ -1,12 +1,12 @@
 /**
  * Circular frame buffer for replay clip capture.
  *
- * Stores the last 3 seconds of canvas frames as raw RGBA pixel data at 10fps.
+ * Stores the last 3 seconds of canvas frames as raw RGBA pixel data at 5fps.
  * Oldest frames are overwritten when the buffer is full (ring buffer behavior).
  */
 
-/** 10fps * 3 seconds = 30 frames max */
-export const BUFFER_CAPACITY = 30;
+/** 5fps * 3 seconds = 15 frames max */
+export const BUFFER_CAPACITY = 15;
 
 /**
  * Replay buffer state. Frames are stored as raw RGBA Uint8ClampedArrays

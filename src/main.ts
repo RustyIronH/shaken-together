@@ -100,8 +100,8 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // 2. Create PixiJS renderer (replaces old canvas in the DOM)
   const renderer = await createPixiRenderer();
 
-  // 2b. Create replay buffer at half resolution for smaller GIFs (~360px wide on most devices)
-  const GIF_RESOLUTION = 0.5;
+  // 2b. Create replay buffer at quarter resolution for performance (~180px wide on most devices)
+  const GIF_RESOLUTION = 0.25;
   const gifWidth = Math.round(renderer.app.screen.width * GIF_RESOLUTION);
   const gifHeight = Math.round(renderer.app.screen.height * GIF_RESOLUTION);
   const replayBuffer = createReplayBuffer(gifWidth, gifHeight);
@@ -343,8 +343,8 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // 14. Track which ragdoll IDs are currently being dragged (for z-order)
   const lastDraggedIds = new Set<string>();
 
-  // 15. Replay frame capture throttle (10fps)
-  const CAPTURE_INTERVAL_MS = 100; // 10fps
+  // 15. Replay frame capture throttle (5fps — lower rate to reduce GPU readback cost on mobile)
+  const CAPTURE_INTERVAL_MS = 200; // 5fps
   let lastCaptureTime = 0;
 
   // 16. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
@@ -422,14 +422,19 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
     }
 
     // Throttled replay frame capture at 10fps
+    // GPU readback is deferred to avoid blocking the render/physics loop
     const now = performance.now();
-    if (now - lastCaptureTime >= CAPTURE_INTERVAL_MS) {
+    if (replayBuffer.recording && now - lastCaptureTime >= CAPTURE_INTERVAL_MS) {
       lastCaptureTime = now;
-      const { pixels } = renderer.app.renderer.extract.pixels({
+      const canvas = renderer.app.renderer.extract.canvas({
         target: renderer.app.stage,
         resolution: GIF_RESOLUTION,
       });
-      pushFrame(replayBuffer, pixels);
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        pushFrame(replayBuffer, new Uint8ClampedArray(imgData.data));
+      }
     }
 
     // Gravity lerp: return to default when shake stops

@@ -9,8 +9,8 @@
 // @ts-expect-error gifenc has no type declarations
 import { GIFEncoder, quantize, applyPalette } from 'gifenc';
 
-/** Frame delay in milliseconds (10fps = 100ms per frame) */
-const FRAME_DELAY_MS = 100;
+/** Frame delay in milliseconds (5fps = 200ms per frame) */
+const FRAME_DELAY_MS = 200;
 
 /**
  * Encodes an array of raw RGBA frames into an animated GIF blob.
