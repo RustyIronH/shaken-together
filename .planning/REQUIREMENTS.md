@@ -129,7 +129,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAPT-02 | Phase 5: Replay Clips + Sharing | Complete |
 | CAPT-03 | Phase 5: Replay Clips + Sharing | Complete |
 | SHAR-01 | Phase 5: Replay Clips + Sharing | Complete |
-| SHAR-02 | Phase 5: Replay Clips + Sharing | Pending |
+| SHAR-02 | Phase 8: Gallery Core | Pending |
 | INFR-01 | Phase 6: Infrastructure + Legal | Pending |
 | INFR-02 | Phase 6: Infrastructure + Legal | Pending |
 | INFR-03 | Phase 6: Infrastructure + Legal | Pending |

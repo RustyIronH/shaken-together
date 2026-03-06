@@ -98,12 +98,11 @@ Plans:
 ### Phase 5: Replay Clips + Sharing
 **Goal**: Users can capture animated replays of the last few seconds of shaking and share their creations (screenshots or clips) via native sharing or file download
 **Depends on**: Phase 4 (extends capture system)
-**Requirements**: CAPT-02, CAPT-03, SHAR-01, SHAR-02
+**Requirements**: CAPT-02, CAPT-03, SHAR-01
 **Success Criteria** (what must be TRUE):
   1. User can capture a replay clip (last 3-5 seconds of shaking) as an animated GIF that plays back the ragdoll action
   2. When sharing, user can choose between their screenshot or their replay clip
-  3. User can share their creation via the native share sheet (Web Share API) or copy a link to it
-  4. When a shared gallery link is pasted into a chat or social media, it shows an OG meta preview image of the creation
+  3. User can share their creation via the native share sheet (Web Share API) or download fallback
 **Plans**: 3 plans
 
 Plans:
@@ -142,11 +141,12 @@ Plans:
 ### Phase 8: Gallery Core
 **Goal**: Users can submit their creations to a public gallery and browse what others have made
 **Depends on**: Phase 5 (capture pipeline), Phase 7 (user accounts for submission identity)
-**Requirements**: GLRY-01, GLRY-02, GLRY-03
+**Requirements**: GLRY-01, GLRY-02, GLRY-03, SHAR-02
 **Success Criteria** (what must be TRUE):
   1. Logged-in user can submit their screenshot or clip to the public gallery with one tap
   2. Any user can browse the public gallery as a grid of thumbnails
   3. User can tap any gallery thumbnail to view the creation full-size
+  4. When a shared gallery link is pasted into a chat or social media, it shows an OG meta preview image of the creation
 **Plans**: TBD
 
 Plans:
