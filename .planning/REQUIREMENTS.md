@@ -31,7 +31,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Capture
 
 - [x] **CAPT-01**: User can take a screenshot of the current ragdoll positions (no UI chrome)
-- [ ] **CAPT-02**: User can capture a replay clip (last 3-5 seconds) as an animated GIF
+- [x] **CAPT-02**: User can capture a replay clip (last 3-5 seconds) as an animated GIF
 - [ ] **CAPT-03**: User chooses screenshot or clip when sharing
 - [x] **CAPT-04**: Capture preview shows the result before sharing/uploading
 
@@ -126,7 +126,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INPT-03 | Phase 3: Device Input | Complete |
 | CAPT-01 | Phase 4: Screenshot Capture | Complete |
 | CAPT-04 | Phase 4: Screenshot Capture | Complete |
-| CAPT-02 | Phase 5: Replay Clips + Sharing | Pending |
+| CAPT-02 | Phase 5: Replay Clips + Sharing | Complete |
 | CAPT-03 | Phase 5: Replay Clips + Sharing | Pending |
 | SHAR-01 | Phase 5: Replay Clips + Sharing | Pending |
 | SHAR-02 | Phase 5: Replay Clips + Sharing | Pending |
