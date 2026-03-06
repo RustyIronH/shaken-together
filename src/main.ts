@@ -1,5 +1,5 @@
-import { Bodies, Composite, Events } from 'matter-js';
-import { createPhysicsEngine, startEngine } from './physics/engine';
+import { Bodies, Composite, Events, Runner } from 'matter-js';
+import { createPhysicsEngine, startEngine, stopEngine } from './physics/engine';
 import { createScene, setDollCount, applyMode, resetScene } from './physics/world';
 import { createPixiRenderer } from './renderer/pixi-renderer';
 import type { PixiRenderer } from './renderer/pixi-renderer';
@@ -11,6 +11,9 @@ import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
 import { initShake, updateGravityLerp, getShakeState } from './input/shake-manager';
 import { createShakeButton, showShakeButton } from './input/shake-button';
+import { prepareForCapture, captureScreenshots } from './capture/screenshot';
+import { createCaptureButton, disableCaptureButton, enableCaptureButton } from './ui/capture-button';
+import { showCaptureOverlay } from './ui/capture-overlay';
 import { showOnboardingHint } from './ui/onboarding-hint';
 import { createPanel } from './ui/panel';
 import { createHamburger } from './ui/hamburger';
@@ -170,7 +173,7 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   createHamburger(uiRoot, () => panel.toggle());
 
   // 9. Start physics engine (fixed timestep via Matter.Runner)
-  startEngine(engine);
+  const runner = startEngine(engine);
 
   // 9b. Initialize shake detection (DeviceMotion -> gravity mapping)
   // On Android/desktop this adds the listener immediately.
@@ -189,6 +192,44 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // 9d. Onboarding hint: "Shake your phone!" or "Hold the button to shake!"
   const onboardingHint = showOnboardingHint(uiRoot, isFallbackMode);
   let hintDismissed = false;
+
+  // 9e. Capture button: always visible, triggers freeze -> capture -> preview flow
+  const captureBtn = createCaptureButton(() => {
+    // 1. Freeze physics (captured positions match what user saw)
+    stopEngine(runner);
+
+    // 2. Prepare: clear drags, reset sprite scales
+    prepareForCapture(scene, spriteMap);
+
+    // 3. Capture both image variants (clean + effects)
+    const images = captureScreenshots(renderer.app, renderer.effectsLayer);
+
+    // 4. Disable capture button during preview
+    disableCaptureButton(captureBtn);
+
+    // 5. Show preview overlay with flash
+    showCaptureOverlay(uiRoot, images, {
+      onSave: (dataUrl: string) => {
+        // Download PNG
+        const link = document.createElement('a');
+        link.download = `shaken-together-${Date.now()}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Resume physics and re-enable button
+        Runner.run(runner, engine);
+        enableCaptureButton(captureBtn);
+      },
+      onDiscard: () => {
+        // Resume physics from frozen state (no reset, per locked decision)
+        Runner.run(runner, engine);
+        enableCaptureButton(captureBtn);
+      },
+    });
+  });
+  uiRoot.appendChild(captureBtn);
 
   // 10. Responsive resize: update physics boundaries on window resize
   // PixiJS handles canvas resize via resizeTo: window, but physics boundaries
