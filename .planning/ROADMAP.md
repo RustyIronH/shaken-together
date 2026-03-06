@@ -89,10 +89,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User taps a capture button and gets a screenshot of the current ragdoll positions with no UI chrome (buttons, overlays) visible in the image
   2. User sees a preview of the captured screenshot before deciding to share or discard it
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md -- Screenshot capture module, capture button FAB, shake button repositioning
+- [ ] 04-02-PLAN.md -- Capture preview overlay, main.ts wiring, human verification
 
 ### Phase 5: Replay Clips + Sharing
 **Goal**: Users can capture animated replays of the last few seconds of shaking and share their creations (screenshots or clips) via native sharing or link
@@ -188,7 +189,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 | 1. Physics Simulation | 4/4 | Complete | 2026-03-05 |
 | 2. Rendering Engine | 4/4 | Complete | 2026-03-05 |
 | 3. Device Input | 1/2 | In Progress|  |
-| 4. Screenshot Capture | 0/0 | Not started | - |
+| 4. Screenshot Capture | 0/2 | Not started | - |
 | 5. Replay Clips + Sharing | 0/0 | Not started | - |
 | 6. Infrastructure + Legal | 0/0 | Not started | - |
 | 7. User Accounts | 0/0 | Not started | - |
