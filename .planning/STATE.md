@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-06T01:34:30.000Z"
-last_activity: 2026-03-06 -- Plan 04-01 complete (Screenshot capture module and capture button)
+stopped_at: Completed 04-02-PLAN.md (Phase 4 complete)
+last_updated: "2026-03-06T01:39:13.000Z"
+last_activity: 2026-03-06 -- Plan 04-02 complete (Capture preview overlay and flow wiring)
 progress:
   total_phases: 10
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 12
-  completed_plans: 11
-  percent: 92
+  completed_plans: 12
+  percent: 100
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
-**Current focus:** Phase 4: Screenshot Capture (in progress)
+**Current focus:** Phase 4: Screenshot Capture (complete)
 
 ## Current Position
 
 Phase: 4 of 10 (Screenshot Capture)
-Plan: 1 of 2
-Status: Plan 04-01 Complete
-Last activity: 2026-03-06 -- Plan 04-01 complete (Screenshot capture module and capture button)
+Plan: 2 of 2
+Status: Phase 4 Complete
+Last activity: 2026-03-06 -- Plan 04-02 complete (Capture preview overlay and flow wiring)
 
-Progress: [█████████░] 92%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 4min
-- Total execution time: 0.60 hours
+- Total execution time: 0.63 hours
 
 **By Phase:**
 
@@ -55,9 +55,10 @@ Progress: [█████████░] 92%
 | 03 | P01 | 5min | 3 | 5 |
 | 03 | P02 | 2min | 3 | 3 |
 | 04 | P01 | 2min | 2 | 4 |
+| 04 | P02 | 2min | 3 | 2 |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 1min, 5min, 2min, 2min
+- Last 5 plans: 1min, 5min, 2min, 2min, 2min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -106,6 +107,8 @@ Recent decisions affecting current work:
 - [Phase 04]: Separated prepareForCapture from captureScreenshots for single-responsibility (drag/scale cleanup vs rendering)
 - [Phase 04]: Drag cleanup clears activeDrags map directly (orphaned constraints harmless with Runner stopped)
 - [Phase 04]: Camera SVG icon with outlined body + circle lens + filled center dot for clear visual identity
+- [Phase 04]: Overlay fades out before invoking save/discard callbacks for clean visual transition
+- [Phase 04]: Runner.run(runner, engine) to resume physics (not startEngine) to reuse existing runner
 
 ### Pending Todos
 
@@ -119,6 +122,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T01:34:30.000Z
-Stopped at: Completed 04-01-PLAN.md
-Resume file: .planning/phases/04-screenshot-capture/04-01-SUMMARY.md
+Last session: 2026-03-06T01:39:13.000Z
+Stopped at: Completed 04-02-PLAN.md (Phase 4 complete)
+Resume file: .planning/phases/04-screenshot-capture/04-02-SUMMARY.md
