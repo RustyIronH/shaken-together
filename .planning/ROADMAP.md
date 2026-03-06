@@ -187,7 +187,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 |-------|----------------|--------|-----------|
 | 1. Physics Simulation | 4/4 | Complete | 2026-03-05 |
 | 2. Rendering Engine | 4/4 | Complete | 2026-03-05 |
-| 3. Device Input | 0/2 | Not started | - |
+| 3. Device Input | 1/2 | In Progress|  |
 | 4. Screenshot Capture | 0/0 | Not started | - |
 | 5. Replay Clips + Sharing | 0/0 | Not started | - |
 | 6. Infrastructure + Legal | 0/0 | Not started | - |

@@ -18,8 +18,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Input
 
-- [ ] **INPT-01**: User shakes phone and ragdolls respond to the motion naturally (DeviceMotion API)
-- [ ] **INPT-02**: iOS users see a pre-permission explainer before DeviceMotion permission request
+- [x] **INPT-01**: User shakes phone and ragdolls respond to the motion naturally (DeviceMotion API)
+- [x] **INPT-02**: iOS users see a pre-permission explainer before DeviceMotion permission request
 - [ ] **INPT-03**: Users who deny motion permission can still play via touch/drag fallback
 
 ### Rendering
@@ -121,8 +121,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RNDR-02 | Phase 2: Rendering Engine | Complete |
 | RNDR-03 | Phase 2: Rendering Engine | Complete |
 | PLAT-03 | Phase 2: Rendering Engine | Complete |
-| INPT-01 | Phase 3: Device Input | Pending |
-| INPT-02 | Phase 3: Device Input | Pending |
+| INPT-01 | Phase 3: Device Input | Complete |
+| INPT-02 | Phase 3: Device Input | Complete |
 | INPT-03 | Phase 3: Device Input | Pending |
 | CAPT-01 | Phase 4: Screenshot Capture | Pending |
 | CAPT-04 | Phase 4: Screenshot Capture | Pending |
