@@ -9,12 +9,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
-// Allow accelerometer/gyroscope so DeviceMotion works on mobile
-app.use((_req, res, next) => {
-  res.setHeader('Permissions-Policy', 'accelerometer=(self), gyroscope=(self)');
-  next();
-});
-
 // JSON body parsing for future API routes
 app.use(express.json());
 
