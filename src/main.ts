@@ -190,25 +190,11 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   const shakeResult = await initShake(engine, scene);
 
   // 9c. Fallback: show hold-to-shake button when DeviceMotion unavailable
-  let isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
-  const shakeBtn = createShakeButton(engine, scene);
+  const isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
   if (isFallbackMode) {
-    document.body.appendChild(shakeBtn);
+    const shakeBtn = createShakeButton(engine, scene);
+    uiRoot.appendChild(shakeBtn);
     showShakeButton(shakeBtn);
-  } else {
-    // Desktop Chrome defines DeviceMotionEvent but never fires events.
-    // If no motion event arrives within 1.5s, show the fallback button.
-    let motionReceived = false;
-    const motionProbe = () => { motionReceived = true; };
-    window.addEventListener('devicemotion', motionProbe);
-    setTimeout(() => {
-      window.removeEventListener('devicemotion', motionProbe);
-      if (!motionReceived) {
-        isFallbackMode = true;
-        document.body.appendChild(shakeBtn);
-        showShakeButton(shakeBtn);
-      }
-    }, 1500);
   }
 
   // 9d. Onboarding hint: "Shake your phone!" or "Hold the button to shake!"
