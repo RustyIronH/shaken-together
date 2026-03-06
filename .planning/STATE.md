@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 6 context gathered
-last_updated: "2026-03-06T03:43:33.312Z"
-last_activity: 2026-03-06 -- Phase 5 complete, transitioned to Phase 6
+status: executing
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-03-06T04:02:57Z"
+last_activity: 2026-03-06 -- Phase 6 Plan 1 complete (Express server + Docker pipeline)
 progress:
   total_phases: 10
   completed_phases: 5
-  total_plans: 15
-  completed_plans: 15
-  percent: 100
+  total_plans: 17
+  completed_plans: 16
+  percent: 94
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
-**Current focus:** Phase 6: Infrastructure + Legal (ready to plan)
+**Current focus:** Phase 6: Infrastructure + Legal (Plan 1 of 2 complete)
 
 ## Current Position
 
 Phase: 6 of 10 (Infrastructure + Legal)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-03-06 -- Phase 5 complete, transitioned to Phase 6
+Plan: 1 of 2 complete
+Status: Executing
+Last activity: 2026-03-06 -- Phase 6 Plan 1 complete (Express server + Docker pipeline)
 
-Progress: [██████████] 100%
+Progress: [█████████░] 94%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: 3min
-- Total execution time: 0.75 hours
+- Total execution time: 0.80 hours
 
 **By Phase:**
 
@@ -59,9 +59,10 @@ Progress: [██████████] 100%
 | 05 | P01 | 3min | 2 | 6 |
 | 05 | P02 | 4min | 2 | 4 |
 | 05 | P03 | 2min | 2 | 5 |
+| 06 | P01 | 3min | 2 | 13 |
 
 **Recent Trend:**
-- Last 5 plans: 2min, 2min, 3min, 4min, 2min
+- Last 5 plans: 2min, 3min, 4min, 2min, 3min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -121,6 +122,11 @@ Recent decisions affecting current work:
 - [Phase 05]: Replay buffer tuned for mobile: 5fps at quarter resolution (not 10fps half-res)
 - [Phase 05]: Gravity scale factor 1/9.8 (accelerometer values are m/s^2, not raw sensor units)
 - [Phase 05]: Accelerometer axis mapping: gravity.x = -smoothedX * scale, gravity.y = smoothedY * scale
+- [Phase 06]: Express 5 with separate tsconfig.server.json targeting nodenext module resolution for backend
+- [Phase 06]: node:22-bookworm-slim (not Alpine) for Docker to support better-sqlite3 native module
+- [Phase 06]: Caddy 2 for zero-config automatic HTTPS with Let's Encrypt
+- [Phase 06]: Server exports app object for testing; only auto-listens when run directly
+- [Phase 06]: SQLite WAL mode enabled by default for better concurrent read performance
 
 ### Pending Todos
 
@@ -134,7 +140,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T03:43:33.309Z
-Stopped at: Phase 6 context gathered
-Resume: `/gsd:discuss-phase 6` to gather context, or `/gsd:plan-phase 6` to plan directly
-Notes: All client-side features (physics, rendering, input, capture, sharing) complete. Phase 6 starts infrastructure work (hosting, age gate, ToS).
+Last session: 2026-03-06T04:02:57Z
+Stopped at: Completed 06-01-PLAN.md
+Resume: `/gsd:execute-phase 6` to continue with Plan 2
+Notes: Phase 6 Plan 1 complete. Express server + Docker pipeline ready. Plan 2 (VPS deployment) next.

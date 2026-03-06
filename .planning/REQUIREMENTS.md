@@ -63,7 +63,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Legal/Infra
 
-- [ ] **INFR-03**: App hosted on content-friendly infrastructure (no mainstream provider ToS violations)
+- [x] **INFR-03**: App hosted on content-friendly infrastructure (no mainstream provider ToS violations)
 
 ## v2 Requirements
 
@@ -128,7 +128,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAPT-03 | Phase 5: Replay Clips + Sharing | Complete |
 | SHAR-01 | Phase 5: Replay Clips + Sharing | Complete |
 | SHAR-02 | Phase 8: Gallery Core | Pending |
-| INFR-03 | Phase 6: Infrastructure + Legal | Pending |
+| INFR-03 | Phase 6: Infrastructure + Legal | Complete |
 | ACCT-01 | Phase 7: User Accounts | Pending |
 | ACCT-02 | Phase 7: User Accounts | Pending |
 | ACCT-03 | Phase 7: User Accounts | Pending |
