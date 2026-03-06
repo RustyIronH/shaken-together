@@ -96,7 +96,7 @@ Plans:
 - [ ] 04-02-PLAN.md -- Capture preview overlay, main.ts wiring, human verification
 
 ### Phase 5: Replay Clips + Sharing
-**Goal**: Users can capture animated replays of the last few seconds of shaking and share their creations (screenshots or clips) via native sharing or link
+**Goal**: Users can capture animated replays of the last few seconds of shaking and share their creations (screenshots or clips) via native sharing or file download
 **Depends on**: Phase 4 (extends capture system)
 **Requirements**: CAPT-02, CAPT-03, SHAR-01, SHAR-02
 **Success Criteria** (what must be TRUE):
@@ -104,11 +104,12 @@ Plans:
   2. When sharing, user can choose between their screenshot or their replay clip
   3. User can share their creation via the native share sheet (Web Share API) or copy a link to it
   4. When a shared gallery link is pasted into a chat or social media, it shows an OG meta preview image of the creation
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md -- Replay buffer + GIF encoder with TDD (gifenc, circular frame buffer, encoding)
+- [ ] 05-02-PLAN.md -- Share utility with Web Share API fallback chain, toast notifications, capture overlay rewrite with Photo/Clip tabs
+- [ ] 05-03-PLAN.md -- Main.ts wiring (replay buffer in ticker, capture flow update), human verification
 
 ### Phase 6: Infrastructure + Legal
 **Goal**: The app has content-friendly hosting, an age gate, and legal pages in place -- prerequisites for any public-facing deployment
@@ -190,7 +191,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 | 2. Rendering Engine | 4/4 | Complete | 2026-03-05 |
 | 3. Device Input | 1/2 | In Progress|  |
 | 4. Screenshot Capture | 0/2 | Not started | - |
-| 5. Replay Clips + Sharing | 0/0 | Not started | - |
+| 5. Replay Clips + Sharing | 0/3 | Not started | - |
 | 6. Infrastructure + Legal | 0/0 | Not started | - |
 | 7. User Accounts | 0/0 | Not started | - |
 | 8. Gallery Core | 0/0 | Not started | - |
