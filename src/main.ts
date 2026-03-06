@@ -10,6 +10,7 @@ import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
 import { initShake, updateGravityLerp } from './input/shake-manager';
+import { createShakeButton, showShakeButton } from './input/shake-button';
 import { createPanel } from './ui/panel';
 import { createHamburger } from './ui/hamburger';
 import { applySquashStretch } from './renderer/effects/squash-stretch';
@@ -173,8 +174,15 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // 9b. Initialize shake detection (DeviceMotion -> gravity mapping)
   // On Android/desktop this adds the listener immediately.
   // On iOS, requestPermission may fail silently without a user gesture -- that's OK,
-  // the fallback button (Plan 02) will handle those users.
-  initShake(engine, scene);
+  // the fallback button handles those users.
+  const shakeResult = await initShake(engine, scene);
+
+  // 9c. Fallback: show hold-to-shake button when DeviceMotion unavailable
+  if (shakeResult === 'denied' || shakeResult === 'unsupported') {
+    const shakeBtn = createShakeButton(engine, scene);
+    uiRoot.appendChild(shakeBtn);
+    showShakeButton(shakeBtn);
+  }
 
   // 10. Responsive resize: update physics boundaries on window resize
   // PixiJS handles canvas resize via resizeTo: window, but physics boundaries
