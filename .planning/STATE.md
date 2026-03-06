@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-06T00:50:56.823Z"
-last_activity: 2026-03-06 -- Plan 03-01 complete (Shake detection and gravity mapping)
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-06T00:54:52.000Z"
+last_activity: 2026-03-06 -- Plan 03-02 complete (Shake fallback button and onboarding hint)
 progress:
   total_phases: 10
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 10
-  completed_plans: 9
+  completed_plans: 10
   percent: 100
 ---
 
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
-**Current focus:** Phase 2: Rendering Engine (complete)
+**Current focus:** Phase 3: Device Input (complete)
 
 ## Current Position
 
 Phase: 3 of 10 (Device Input)
-Plan: 1 of 2
-Status: Executing
-Last activity: 2026-03-06 -- Plan 03-01 complete (Shake detection and gravity mapping)
+Plan: 2 of 2
+Status: Phase Complete
+Last activity: 2026-03-06 -- Plan 03-02 complete (Shake fallback button and onboarding hint)
 
 Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 10
 - Average duration: 4min
-- Total execution time: 0.50 hours
+- Total execution time: 0.57 hours
 
 **By Phase:**
 
@@ -52,12 +52,14 @@ Progress: [██████████] 100%
 | 02 | P03 | 4min | 2 | 4 |
 | 02 | P04 | 1min | 1 | 0 |
 
+| 03 | P01 | 5min | 3 | 5 |
+| 03 | P02 | 2min | 3 | 3 |
+
 **Recent Trend:**
-- Last 5 plans: 5min, 4min, 4min, 1min
+- Last 5 plans: 4min, 4min, 1min, 5min, 2min
 - Trend: stable
 
 *Updated after each plan completion*
-| Phase 03 P01 | 5min | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -97,6 +99,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Used accelerationIncludingGravity for maximum device compatibility (works without gyroscope)
 - [Phase 03]: Safe window reference via globalThis for Node test compatibility in shake-manager
 - [Phase 03]: Gravity lerp runs after face expression timers using live scene.currentMode reference
+- [Phase 03]: Shake button uses Pointer Events with setPointerCapture for reliable hold on touch devices
+- [Phase 03]: Onboarding hint auto-fades via CSS opacity transition + transitionend DOM cleanup
+- [Phase 03]: Fallback mode determined by initShake() return value (denied/unsupported), not separate detection
 
 ### Pending Todos
 
@@ -110,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T00:50:56.821Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-03-06T00:54:52.000Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
