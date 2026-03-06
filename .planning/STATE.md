@@ -18,17 +18,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-05)
+See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
-**Current focus:** Phase 5 complete. Next: Phase 6 (Infrastructure + Legal)
+**Current focus:** Phase 6: Infrastructure + Legal (ready to plan)
 
 ## Current Position
 
-Phase: 5 of 10 (Replay Clips + Sharing) -- COMPLETE
-Plan: 3 of 3 -- COMPLETE
-Status: Phase 5 fully complete, all 3 plans finished
-Last activity: 2026-03-06 -- Phase 5 Plan 03 completed (human-verify auto-approved)
+Phase: 6 of 10 (Infrastructure + Legal)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-03-06 -- Phase 5 complete, transitioned to Phase 6
 
 Progress: [██████████] 100%
 
@@ -128,13 +128,13 @@ None yet.
 
 ### Blockers/Concerns
 
-- Matter.js performance validated in Phase 1 (60fps with 5 dolls); Rapier migration not needed unless mobile testing reveals issues
-- Supabase content policy for explicit cartoons needs verification before Phase 6
-- Character art assets resolved in Plan 02-01 (4 programmatic characters with distinct silhouettes)
+- Supabase content policy for explicit cartoons needs verification in Phase 6
+- Ragdoll joint limits still slightly loose per user — revisit in future polish pass
+- Pre-existing test failure in src/input/__tests__/drag.test.ts (screenToWorld coordinate math)
 
 ## Session Continuity
 
-Last session: 2026-03-06T03:19:00.000Z
-Stopped at: Completed 05-03-PLAN.md -- Phase 5 fully complete
-Resume: Start Phase 6 (Infrastructure + Legal) or Phase 7 (User Accounts)
-Notes: Phase 5 complete. All replay clips + sharing features working on Android. Ragdoll joint limits still slightly loose per user -- revisit in future polish pass.
+Last session: 2026-03-06
+Stopped at: Phase 5 complete, ready to plan Phase 6
+Resume: `/gsd:discuss-phase 6` to gather context, or `/gsd:plan-phase 6` to plan directly
+Notes: All client-side features (physics, rendering, input, capture, sharing) complete. Phase 6 starts infrastructure work (hosting, age gate, ToS).
