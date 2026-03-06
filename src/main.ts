@@ -9,7 +9,7 @@ import { getCharacter } from './renderer/character-registry';
 import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
-import { initShake, updateGravityLerp, getShakeState } from './input/shake-manager';
+import { initShake, updateGravityLerp, getShakeState, hasReceivedMotionEvent } from './input/shake-manager';
 import { createShakeButton, showShakeButton } from './input/shake-button';
 import { prepareForCapture, captureScreenshots } from './capture/screenshot';
 import { createReplayBuffer, pushFrame, getOrderedFrames } from './capture/replay-buffer';
@@ -190,11 +190,23 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   const shakeResult = await initShake(engine, scene);
 
   // 9c. Fallback: show hold-to-shake button when DeviceMotion unavailable
-  const isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
+  let isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
+  let shakeBtn: HTMLButtonElement | null = null;
   if (isFallbackMode) {
-    const shakeBtn = createShakeButton(engine, scene);
-    uiRoot.appendChild(shakeBtn);
+    shakeBtn = createShakeButton(engine, scene);
+    document.body.appendChild(shakeBtn);
     showShakeButton(shakeBtn);
+  } else {
+    // DeviceMotion "granted" but may never fire (desktop browsers).
+    // If no event arrives within 1.5s, show the fallback button.
+    setTimeout(() => {
+      if (!hasReceivedMotionEvent()) {
+        isFallbackMode = true;
+        shakeBtn = createShakeButton(engine, scene);
+        document.body.appendChild(shakeBtn);
+        showShakeButton(shakeBtn);
+      }
+    }, 1500);
   }
 
   // 9d. Onboarding hint: "Shake your phone!" or "Hold the button to shake!"

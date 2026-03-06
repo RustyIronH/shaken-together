@@ -166,6 +166,13 @@ export async function initShake(
 }
 
 /**
+ * Whether at least one real devicemotion event has been received.
+ */
+export function hasReceivedMotionEvent(): boolean {
+  return shakeState.lastEventTime > 0;
+}
+
+/**
  * Internal event handler for devicemotion events.
  * Forwards to handleMotion with stored engine/scene references.
  */
