@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-06T01:15:20.820Z"
-last_activity: 2026-03-06 -- Plan 03-02 complete (Shake fallback button and onboarding hint)
+status: in-progress
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-06T01:34:30.000Z"
+last_activity: 2026-03-06 -- Plan 04-01 complete (Screenshot capture module and capture button)
 progress:
   total_phases: 10
   completed_phases: 3
-  total_plans: 10
-  completed_plans: 10
-  percent: 100
+  total_plans: 12
+  completed_plans: 11
+  percent: 92
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
-**Current focus:** Phase 3: Device Input (complete)
+**Current focus:** Phase 4: Screenshot Capture (in progress)
 
 ## Current Position
 
-Phase: 3 of 10 (Device Input)
-Plan: 2 of 2
-Status: Phase Complete
-Last activity: 2026-03-06 -- Plan 03-02 complete (Shake fallback button and onboarding hint)
+Phase: 4 of 10 (Screenshot Capture)
+Plan: 1 of 2
+Status: Plan 04-01 Complete
+Last activity: 2026-03-06 -- Plan 04-01 complete (Screenshot capture module and capture button)
 
-Progress: [██████████] 100%
+Progress: [█████████░] 92%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: 4min
-- Total execution time: 0.57 hours
+- Total execution time: 0.60 hours
 
 **By Phase:**
 
@@ -54,9 +54,10 @@ Progress: [██████████] 100%
 
 | 03 | P01 | 5min | 3 | 5 |
 | 03 | P02 | 2min | 3 | 3 |
+| 04 | P01 | 2min | 2 | 4 |
 
 **Recent Trend:**
-- Last 5 plans: 4min, 4min, 1min, 5min, 2min
+- Last 5 plans: 4min, 1min, 5min, 2min, 2min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Shake button uses Pointer Events with setPointerCapture for reliable hold on touch devices
 - [Phase 03]: Onboarding hint auto-fades via CSS opacity transition + transitionend DOM cleanup
 - [Phase 03]: Fallback mode determined by initShake() return value (denied/unsupported), not separate detection
+- [Phase 04]: Separated prepareForCapture from captureScreenshots for single-responsibility (drag/scale cleanup vs rendering)
+- [Phase 04]: Drag cleanup clears activeDrags map directly (orphaned constraints harmless with Runner stopped)
+- [Phase 04]: Camera SVG icon with outlined body + circle lens + filled center dot for clear visual identity
 
 ### Pending Todos
 
@@ -115,6 +119,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T01:15:20.818Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-screenshot-capture/04-CONTEXT.md
+Last session: 2026-03-06T01:34:30.000Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: .planning/phases/04-screenshot-capture/04-01-SUMMARY.md
