@@ -9,7 +9,7 @@ import { getCharacter } from './renderer/character-registry';
 import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
-import { initShake, updateGravityLerp, getShakeState, hasReceivedMotionEvent } from './input/shake-manager';
+import { initShake, updateGravityLerp, getShakeState, hasReceivedMotionEvent, requestMotionPermission } from './input/shake-manager';
 import { createShakeButton, showShakeButton } from './input/shake-button';
 import { prepareForCapture, captureScreenshots } from './capture/screenshot';
 import { createReplayBuffer, pushFrame, getOrderedFrames } from './capture/replay-buffer';
@@ -189,16 +189,41 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // the fallback button handles those users.
   const shakeResult = await initShake(engine, scene);
 
-  // 9c. Fallback: show hold-to-shake button when DeviceMotion unavailable
+  // 9c. Fallback / permission handling
   let isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
   let shakeBtn: HTMLButtonElement | null = null;
-  if (isFallbackMode) {
+
+  if (shakeResult === 'prompt') {
+    // iOS: need user gesture to request permission. Show a one-time button.
+    const permBtn = document.createElement('button');
+    permBtn.textContent = 'Tap to Enable Motion';
+    permBtn.id = 'motion-permission-button';
+    Object.assign(permBtn.style, {
+      position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
+      padding: '14px 28px', fontSize: '16px', fontWeight: '600',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      color: '#fff', background: 'rgba(80, 120, 255, 0.85)',
+      border: 'none', borderRadius: '24px', cursor: 'pointer',
+      zIndex: '200', touchAction: 'manipulation',
+    });
+    document.body.appendChild(permBtn);
+    permBtn.addEventListener('click', async () => {
+      const granted = await requestMotionPermission();
+      permBtn.remove();
+      if (!granted) {
+        // Permission denied — show hold-to-shake fallback
+        isFallbackMode = true;
+        shakeBtn = createShakeButton(engine, scene);
+        document.body.appendChild(shakeBtn);
+        showShakeButton(shakeBtn);
+      }
+    });
+  } else if (isFallbackMode) {
     shakeBtn = createShakeButton(engine, scene);
     document.body.appendChild(shakeBtn);
     showShakeButton(shakeBtn);
   } else {
     // DeviceMotion "granted" but may never fire (desktop browsers).
-    // If no event arrives within 1.5s, show the fallback button.
     setTimeout(() => {
       if (!hasReceivedMotionEvent()) {
         isFallbackMode = true;

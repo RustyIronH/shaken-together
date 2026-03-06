@@ -127,7 +127,7 @@ export function updateGravityLerp(engine: Engine, mode: PhysicsMode, deltaMs: nu
 export async function initShake(
   engine: Engine,
   scene: SceneState,
-): Promise<'granted' | 'denied' | 'unsupported'> {
+): Promise<'granted' | 'denied' | 'unsupported' | 'prompt'> {
   _engine = engine;
   _scene = scene;
 
@@ -141,21 +141,11 @@ export async function initShake(
   // Safe reference to window (works in both browser and Node test environments)
   const win = typeof window !== 'undefined' ? window : (globalThis as any).window;
 
-  // 2. Check if permission request is needed (iOS Safari)
+  // 2. iOS Safari requires requestPermission() from a user gesture.
+  // Don't call it here — return 'prompt' so the caller can show a button.
   if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
-    try {
-      const permission = await (DeviceMotionEvent as any).requestPermission();
-      shakeState.permissionState = permission;
-      if (permission === 'granted') {
-        shakeState.supported = true;
-        if (win) win.addEventListener('devicemotion', onDeviceMotion);
-      }
-      return permission;
-    } catch {
-      shakeState.permissionState = 'denied';
-      shakeState.supported = false;
-      return 'denied';
-    }
+    shakeState.permissionState = 'prompt';
+    return 'prompt';
   }
 
   // 3. Android/other browsers: available by default over HTTPS
@@ -170,6 +160,27 @@ export async function initShake(
  */
 export function hasReceivedMotionEvent(): boolean {
   return shakeState.lastEventTime > 0;
+}
+
+/**
+ * Request iOS DeviceMotion permission. MUST be called from a user gesture (tap).
+ * Returns true if granted.
+ */
+export async function requestMotionPermission(): Promise<boolean> {
+  const win = typeof window !== 'undefined' ? window : (globalThis as any).window;
+  try {
+    const permission = await (DeviceMotionEvent as any).requestPermission();
+    shakeState.permissionState = permission;
+    if (permission === 'granted') {
+      shakeState.supported = true;
+      if (win) win.addEventListener('devicemotion', onDeviceMotion);
+      return true;
+    }
+    return false;
+  } catch {
+    shakeState.permissionState = 'denied';
+    return false;
+  }
 }
 
 /**
