@@ -20,8 +20,7 @@ export function createShakeButton(engine: Engine, scene: SceneState): HTMLButton
   Object.assign(btn.style, {
     position: 'fixed',
     bottom: '24px',
-    left: '50%',
-    transform: 'translateX(-50%)',
+    left: '24px',
     minWidth: '140px',
     minHeight: '48px',
     padding: '12px 24px',
