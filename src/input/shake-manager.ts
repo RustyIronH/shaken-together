@@ -82,11 +82,11 @@ export function handleMotion(event: DeviceMotionEvent, engine: Engine, scene: Sc
     ? SHAKE_CONFIG.goofyMultiplier
     : 1.0;
 
-  // Map to gravity (snow globe model):
-  // Device X -> gravity X, device Y (inverted) -> gravity Y
-  // scaleFactor normalizes so 9.8 m/s^2 -> default Matter.js gravity scale
-  engine.gravity.x = shakeState.smoothedX * SHAKE_CONFIG.gravityScaleFactor * modeMultiplier;
-  engine.gravity.y = -shakeState.smoothedY * SHAKE_CONFIG.gravityScaleFactor * modeMultiplier;
+  // Map accelerometer to gravity:
+  // Device tilt left (accel.x < 0) -> gravity pulls left (gravity.x < 0)
+  // Device upright (accel.y < 0) -> gravity pulls down (gravity.y > 0)
+  engine.gravity.x = -shakeState.smoothedX * SHAKE_CONFIG.gravityScaleFactor * modeMultiplier;
+  engine.gravity.y = shakeState.smoothedY * SHAKE_CONFIG.gravityScaleFactor * modeMultiplier;
 
   // Wake sleeping bodies if shake is significant
   wakeAllBodies(engine, magnitudeDelta);
