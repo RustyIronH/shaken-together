@@ -25,7 +25,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Device Input** - Shake detection via DeviceMotion, iOS permission flow, touch/drag fallback
 - [ ] **Phase 4: Screenshot Capture** - Screenshot of ragdoll positions with capture preview
 - [x] **Phase 5: Replay Clips + Sharing** - Animated GIF replay recording, screenshot-or-clip chooser, Web Share API, OG meta previews (completed 2026-03-06)
-- [ ] **Phase 6: Infrastructure + Legal** - Content-friendly hosting, age gate, Terms of Service (parallel with Phases 1-5)
+- [ ] **Phase 6: Infrastructure + Legal** - Content-friendly hosting, Docker deployment, HTTPS (parallel with Phases 1-5)
 - [ ] **Phase 7: User Accounts** - Email/password signup, login, session persistence, logout (parallel with Phases 1-5)
 - [ ] **Phase 8: Gallery Core** - Submit creations to public gallery, browse thumbnails, view full-size
 - [ ] **Phase 9: Gallery Social** - Star ratings, average rating display, sort by newest/top/trending
@@ -118,11 +118,11 @@ Plans:
   1. App is deployed in a Docker container on a VPS and accessible at shaken.ironhaven.com.au
   2. Single container serves both the Vite frontend and Express backend API from the same origin
   3. HTTPS is configured with valid certificate
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md -- Express server, Docker build pipeline, Caddy config, server tests
+- [ ] 06-02-PLAN.md -- VPS deployment, DNS configuration, HTTPS verification
 
 ### Phase 7: User Accounts
 **Goal**: Users can create accounts, log in, and maintain sessions -- required for gallery submissions and rating integrity
@@ -192,7 +192,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 | 3. Device Input | 1/2 | In Progress|  |
 | 4. Screenshot Capture | 0/2 | Not started | - |
 | 5. Replay Clips + Sharing | 3/3 | Complete   | 2026-03-06 |
-| 6. Infrastructure + Legal | 0/0 | Not started | - |
+| 6. Infrastructure + Legal | 0/2 | Planning | - |
 | 7. User Accounts | 0/0 | Not started | - |
 | 8. Gallery Core | 0/0 | Not started | - |
 | 9. Gallery Social | 0/0 | Not started | - |
