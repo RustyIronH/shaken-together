@@ -193,7 +193,7 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   let isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
   const shakeBtn = createShakeButton(engine, scene);
   if (isFallbackMode) {
-    uiRoot.appendChild(shakeBtn);
+    document.body.appendChild(shakeBtn);
     showShakeButton(shakeBtn);
   } else {
     // Desktop Chrome defines DeviceMotionEvent but never fires events.
@@ -205,7 +205,7 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
       window.removeEventListener('devicemotion', motionProbe);
       if (!motionReceived) {
         isFallbackMode = true;
-        uiRoot.appendChild(shakeBtn);
+        document.body.appendChild(shakeBtn);
         showShakeButton(shakeBtn);
       }
     }, 1500);

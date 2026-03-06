@@ -36,7 +36,7 @@ export function createShakeButton(engine: Engine, scene: SceneState): HTMLButton
     touchAction: 'none',
     userSelect: 'none',
     WebkitUserSelect: 'none',
-    zIndex: '50',         // Above canvas, below panel (panel z-index is 100+)
+    zIndex: '200',        // Above canvas, below panel overlays
     outline: 'none',
     transition: 'background 0.15s ease',
   });
@@ -57,19 +57,17 @@ export function createShakeButton(engine: Engine, scene: SceneState): HTMLButton
     burstInterval = setInterval(() => {
       // Random angle each tick
       const angle = Math.random() * Math.PI * 2;
-      // Random magnitude: moderate to strong (3-10 range)
-      const mag = 3 + Math.random() * 7;
+      // Strong magnitude for visible effect (gravity.scale is 0.001,
+      // so gravity.x/y of 3-8 gives effective force 0.003-0.008 per tick)
+      const mag = 3 + Math.random() * 5;
 
       // Mode multiplier: Goofy mode gets ~2x force
       const modeMultiplier = scene.currentMode.name === 'goofy'
         ? SHAKE_CONFIG.goofyMultiplier
         : 1.0;
 
-      // Scale factor normalized for Matter.js gravity
-      const scaleFactor = SHAKE_CONFIG.gravityScaleFactor * 9.8;
-
-      engine.gravity.x = Math.cos(angle) * mag * scaleFactor * modeMultiplier;
-      engine.gravity.y = Math.sin(angle) * mag * scaleFactor * modeMultiplier;
+      engine.gravity.x = Math.cos(angle) * mag * modeMultiplier;
+      engine.gravity.y = Math.sin(angle) * mag * modeMultiplier;
 
       // Wake sleeping bodies (same logic as shake-manager)
       const bodies = Composite.allBodies(engine.world);
@@ -89,7 +87,11 @@ export function createShakeButton(engine: Engine, scene: SceneState): HTMLButton
       clearInterval(burstInterval);
       burstInterval = null;
     }
-    // Do NOT snap gravity back -- let updateGravityLerp handle smooth return
+    // Snap gravity back to mode defaults so ragdolls settle quickly
+    const g = scene.currentMode.gravity;
+    engine.gravity.x = g.x;
+    engine.gravity.y = g.y;
+    engine.gravity.scale = g.scale;
   };
 
   btn.addEventListener('pointerup', stopBursts);
