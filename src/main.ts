@@ -343,9 +343,23 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // 14. Track which ragdoll IDs are currently being dragged (for z-order)
   const lastDraggedIds = new Set<string>();
 
-  // 15. Replay frame capture throttle (5fps — lower rate to reduce GPU readback cost on mobile)
-  const CAPTURE_INTERVAL_MS = 200; // 5fps
-  let lastCaptureTime = 0;
+  // 15. Replay frame capture on separate interval (not in ticker — GPU readback blocks render)
+  setInterval(() => {
+    if (!replayBuffer.recording) return;
+    try {
+      const canvas = renderer.app.renderer.extract.canvas({
+        target: renderer.app.stage,
+        resolution: GIF_RESOLUTION,
+      });
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        pushFrame(replayBuffer, new Uint8ClampedArray(imgData.data));
+      }
+    } catch {
+      // Silently skip frame if extract fails (e.g., during resize)
+    }
+  }, 200); // 5fps
 
   // 16. Ticker callback: physics-to-sprite sync + effects + drag feedback + z-order
   renderer.app.ticker.add((ticker) => {
@@ -421,21 +435,7 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
       }
     }
 
-    // Throttled replay frame capture at 10fps
-    // GPU readback is deferred to avoid blocking the render/physics loop
-    const now = performance.now();
-    if (replayBuffer.recording && now - lastCaptureTime >= CAPTURE_INTERVAL_MS) {
-      lastCaptureTime = now;
-      const canvas = renderer.app.renderer.extract.canvas({
-        target: renderer.app.stage,
-        resolution: GIF_RESOLUTION,
-      });
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        pushFrame(replayBuffer, new Uint8ClampedArray(imgData.data));
-      }
-    }
+    // Replay frame capture moved to setInterval outside ticker to avoid blocking render
 
     // Gravity lerp: return to default when shake stops
     // Uses scene.currentMode (not a captured reference) so it follows mode switches

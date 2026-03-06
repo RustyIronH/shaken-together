@@ -111,7 +111,7 @@ export const CHARACTER_IDS: CharacterId[] = ['slim', 'round', 'buff', 'tiny'];
 // --- Shake Configuration ---
 export const SHAKE_CONFIG: ShakeConfig = {
   smoothingAlpha: 0.3,
-  gravityScaleFactor: 0.001 / 9.8,  // Normalize: 9.8 m/s^2 = default scale
+  gravityScaleFactor: 1 / 9.8,  // Normalize: 9.8 m/s^2 -> gravity.y = 1 (works with gravity.scale)
   goofyMultiplier: 2.0,
   lerpSpeed: 0.05,                   // ~95% settled in ~1s at 60fps
   wakeThreshold: 2.0,               // m/s^2 above resting magnitude
