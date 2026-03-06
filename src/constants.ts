@@ -71,16 +71,16 @@ export const RAGDOLL_JOINTS: JointConfig[] = [
 
 // --- Angle Limits (Realistic mode base values, in radians) ---
 export const ANGLE_LIMITS: AngleLimit[] = [
-  { bodyALabel: 'head',       bodyBLabel: 'upperTorso', minAngle: -0.5,  maxAngle: 0.5,  goofyMultiplier: 2.0 },
-  { bodyALabel: 'upperTorso', bodyBLabel: 'lowerTorso', minAngle: -0.3,  maxAngle: 0.3,  goofyMultiplier: 2.0 },
-  { bodyALabel: 'upperTorso', bodyBLabel: 'upperArmL',  minAngle: -1.5,  maxAngle: 1.5,  goofyMultiplier: 1.5 },
-  { bodyALabel: 'upperTorso', bodyBLabel: 'upperArmR',  minAngle: -1.5,  maxAngle: 1.5,  goofyMultiplier: 1.5 },
-  { bodyALabel: 'upperArmL',  bodyBLabel: 'forearmL',   minAngle: -2.5,  maxAngle: 0.1,  goofyMultiplier: 1.8 },  // Elbow bends one way
-  { bodyALabel: 'upperArmR',  bodyBLabel: 'forearmR',   minAngle: -0.1,  maxAngle: 2.5,  goofyMultiplier: 1.8 },  // Mirrored
-  { bodyALabel: 'lowerTorso', bodyBLabel: 'upperLegL',  minAngle: -1.2,  maxAngle: 0.5,  goofyMultiplier: 1.8 },
-  { bodyALabel: 'lowerTorso', bodyBLabel: 'upperLegR',  minAngle: -0.5,  maxAngle: 1.2,  goofyMultiplier: 1.8 },
-  { bodyALabel: 'upperLegL',  bodyBLabel: 'lowerLegL',  minAngle: -0.1,  maxAngle: 2.5,  goofyMultiplier: 1.8 },  // Knee bends one way
-  { bodyALabel: 'upperLegR',  bodyBLabel: 'lowerLegR',  minAngle: -2.5,  maxAngle: 0.1,  goofyMultiplier: 1.8 },  // Mirrored
+  { bodyALabel: 'head',       bodyBLabel: 'upperTorso', minAngle: -0.3,  maxAngle: 0.3,  goofyMultiplier: 2.0 },
+  { bodyALabel: 'upperTorso', bodyBLabel: 'lowerTorso', minAngle: -0.2,  maxAngle: 0.2,  goofyMultiplier: 2.0 },
+  { bodyALabel: 'upperTorso', bodyBLabel: 'upperArmL',  minAngle: -0.8,  maxAngle: 0.8,  goofyMultiplier: 1.5 },
+  { bodyALabel: 'upperTorso', bodyBLabel: 'upperArmR',  minAngle: -0.8,  maxAngle: 0.8,  goofyMultiplier: 1.5 },
+  { bodyALabel: 'upperArmL',  bodyBLabel: 'forearmL',   minAngle: -1.4,  maxAngle: 0.05, goofyMultiplier: 1.8 },  // Elbow bends one way
+  { bodyALabel: 'upperArmR',  bodyBLabel: 'forearmR',   minAngle: -0.05, maxAngle: 1.4,  goofyMultiplier: 1.8 },  // Mirrored
+  { bodyALabel: 'lowerTorso', bodyBLabel: 'upperLegL',  minAngle: -0.7,  maxAngle: 0.3,  goofyMultiplier: 1.8 },
+  { bodyALabel: 'lowerTorso', bodyBLabel: 'upperLegR',  minAngle: -0.3,  maxAngle: 0.7,  goofyMultiplier: 1.8 },
+  { bodyALabel: 'upperLegL',  bodyBLabel: 'lowerLegL',  minAngle: -0.05, maxAngle: 1.4,  goofyMultiplier: 1.8 },  // Knee bends one way
+  { bodyALabel: 'upperLegR',  bodyBLabel: 'lowerLegR',  minAngle: -1.4,  maxAngle: 0.05, goofyMultiplier: 1.8 },  // Mirrored
 ];
 
 // --- Color Schemes (unique per doll instance) ---
