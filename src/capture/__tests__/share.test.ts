@@ -1,13 +1,33 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { shareFile, dataUrlToBlob } from '../share';
 
+/**
+ * Helper: stubs document.createElement to return a mock anchor element.
+ * Returns the mock anchor and its click spy for assertions.
+ */
+function stubDocumentForDownload() {
+  const clickFn = vi.fn();
+  const mockAnchor = {
+    href: '',
+    download: '',
+    click: clickFn,
+    style: { display: '' },
+  };
+  vi.stubGlobal('document', {
+    createElement: vi.fn().mockReturnValue(mockAnchor),
+  });
+  return { mockAnchor, clickFn };
+}
+
 describe('Share utility', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   describe('shareFile', () => {
@@ -55,6 +75,10 @@ describe('Share utility', () => {
         canShare: undefined,
         clipboard: { write: writeFn },
       });
+      // ClipboardItem may not exist in Node test environment
+      vi.stubGlobal('ClipboardItem', class MockClipboardItem {
+        constructor(public items: Record<string, Blob>) {}
+      });
 
       const result = await shareFile(testBlob, 'test.png', 'image/png');
 
@@ -77,10 +101,8 @@ describe('Share utility', () => {
         revokeObjectURL: revokeObjUrl,
       });
 
-      // Mock anchor element click
-      const clickFn = vi.fn();
-      const mockAnchor = { href: '', download: '', click: clickFn, style: {} } as unknown as HTMLAnchorElement;
-      vi.spyOn(document, 'createElement').mockReturnValue(mockAnchor as unknown as HTMLElement);
+      // Mock document.createElement to return mock anchor
+      const { mockAnchor, clickFn } = stubDocumentForDownload();
 
       const gifBlob = new Blob(['test'], { type: 'image/gif' });
       const result = await shareFile(gifBlob, 'test.gif', 'image/gif');
@@ -109,9 +131,7 @@ describe('Share utility', () => {
         revokeObjectURL: revokeObjUrl,
       });
 
-      const clickFn = vi.fn();
-      const mockAnchor = { href: '', download: '', click: clickFn, style: {} } as unknown as HTMLAnchorElement;
-      vi.spyOn(document, 'createElement').mockReturnValue(mockAnchor as unknown as HTMLElement);
+      stubDocumentForDownload();
 
       const result = await shareFile(testBlob, 'test.png', 'image/png');
 
@@ -133,6 +153,9 @@ describe('Share utility', () => {
         revokeObjectURL: vi.fn(),
       });
 
+      // Stub document to avoid ReferenceError in Node environment
+      stubDocumentForDownload();
+
       const result = await shareFile(testBlob, 'test.png', 'image/png');
 
       expect(result).toBe('failed');
@@ -153,9 +176,7 @@ describe('Share utility', () => {
         revokeObjectURL: revokeObjUrl,
       });
 
-      const clickFn = vi.fn();
-      const mockAnchor = { href: '', download: '', click: clickFn, style: {} } as unknown as HTMLAnchorElement;
-      vi.spyOn(document, 'createElement').mockReturnValue(mockAnchor as unknown as HTMLElement);
+      stubDocumentForDownload();
 
       const gifBlob = new Blob(['test'], { type: 'image/gif' });
       const result = await shareFile(gifBlob, 'test.gif', 'image/gif');
