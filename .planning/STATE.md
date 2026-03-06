@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-06T02:35:39.766Z"
-last_activity: 2026-03-06 -- Plan 05-02 complete (Share utility, toast, overlay rewrite)
+status: completed
+stopped_at: Plan 05-03 Task 2 checkpoint (human-verify) — testing on Android phone, physics fixes applied
+last_updated: "2026-03-06T06:00:00.000Z"
+last_activity: 2026-03-06 -- Phase 5 execution paused during UAT on Android device
 progress:
   total_phases: 10
   completed_phases: 4
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-05)
 ## Current Position
 
 Phase: 5 of 10 (Replay Clips + Sharing)
-Plan: 2 of 3
-Status: Plan 05-02 Complete
-Last activity: 2026-03-06 -- Plan 05-02 complete (Share utility, toast, overlay rewrite)
+Plan: 3 of 3
+Status: Plan 05-03 Task 2 checkpoint (human-verify on Android)
+Last activity: 2026-03-06 -- Physics/gravity fixes during Phase 5 UAT
 
 Progress: [█████████░] 93%
 
@@ -129,6 +129,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T02:35:18.186Z
-Stopped at: Completed 05-02-PLAN.md
-Resume file: None
+Last session: 2026-03-06T06:00:00.000Z
+Stopped at: Plan 05-03 Task 2 checkpoint — all 3 plans code-complete, testing overlay/capture on Android
+Resume: Re-run `/gsd:execute-phase 5` to resume from checkpoint, or manually test and type "approved"
+Notes: Several physics fixes applied during UAT (gravity scale, axis mapping, angle limits, perf). Ragdoll joint limits still too floppy per user — revisit later.
