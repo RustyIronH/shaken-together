@@ -76,11 +76,11 @@ Plans:
   1. User shakes their phone and ragdolls fly around responding to the direction and intensity of the shake
   2. On iOS, user sees a clear explainer screen before the DeviceMotion permission prompt, explaining why motion access is needed
   3. Users who deny motion permission (or use unsupported browsers) can still play by touching and dragging ragdolls to fling them
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- Shake manager: DeviceMotion API, accelerometer smoothing, gravity mapping, Goofy amplification, gravity lerp, body wake-up
+- [ ] 03-02-PLAN.md -- Hold-to-shake fallback button, onboarding hint, human verification
 
 ### Phase 4: Screenshot Capture
 **Goal**: Users can freeze the current ragdoll positions and capture a clean screenshot for sharing
@@ -187,7 +187,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 |-------|----------------|--------|-----------|
 | 1. Physics Simulation | 4/4 | Complete | 2026-03-05 |
 | 2. Rendering Engine | 4/4 | Complete | 2026-03-05 |
-| 3. Device Input | 0/0 | Not started | - |
+| 3. Device Input | 0/2 | Not started | - |
 | 4. Screenshot Capture | 0/0 | Not started | - |
 | 5. Replay Clips + Sharing | 0/0 | Not started | - |
 | 6. Infrastructure + Legal | 0/0 | Not started | - |
