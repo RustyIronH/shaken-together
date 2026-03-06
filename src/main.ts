@@ -9,8 +9,9 @@ import { getCharacter } from './renderer/character-registry';
 import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
-import { initShake, updateGravityLerp } from './input/shake-manager';
+import { initShake, updateGravityLerp, getShakeState } from './input/shake-manager';
 import { createShakeButton, showShakeButton } from './input/shake-button';
+import { showOnboardingHint } from './ui/onboarding-hint';
 import { createPanel } from './ui/panel';
 import { createHamburger } from './ui/hamburger';
 import { applySquashStretch } from './renderer/effects/squash-stretch';
@@ -178,11 +179,16 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   const shakeResult = await initShake(engine, scene);
 
   // 9c. Fallback: show hold-to-shake button when DeviceMotion unavailable
-  if (shakeResult === 'denied' || shakeResult === 'unsupported') {
+  const isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
+  if (isFallbackMode) {
     const shakeBtn = createShakeButton(engine, scene);
     uiRoot.appendChild(shakeBtn);
     showShakeButton(shakeBtn);
   }
+
+  // 9d. Onboarding hint: "Shake your phone!" or "Hold the button to shake!"
+  const onboardingHint = showOnboardingHint(uiRoot, isFallbackMode);
+  let hintDismissed = false;
 
   // 10. Responsive resize: update physics boundaries on window resize
   // PixiJS handles canvas resize via resizeTo: window, but physics boundaries
@@ -341,5 +347,11 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
     // Gravity lerp: return to default when shake stops
     // Uses scene.currentMode (not a captured reference) so it follows mode switches
     updateGravityLerp(engine, scene.currentMode, deltaMs);
+
+    // Dismiss onboarding hint on first shake detection
+    if (!hintDismissed && getShakeState().active) {
+      onboardingHint.dismiss();
+      hintDismissed = true;
+    }
   });
 })();
