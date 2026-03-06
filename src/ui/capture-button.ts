@@ -24,7 +24,7 @@ export function createCaptureButton(onCapture: () => void): HTMLButtonElement {
 
   Object.assign(btn.style, {
     position: 'fixed',
-    bottom: '24px',
+    top: '24px',
     right: '24px',
     width: '56px',
     height: '56px',

@@ -9,8 +9,7 @@ import { getCharacter } from './renderer/character-registry';
 import type { FaceExpression } from './renderer/character-registry';
 import { bringContainerToFront } from './renderer/colors';
 import { setupMultiTouch } from './input/multi-touch';
-import { initShake, updateGravityLerp, getShakeState, hasReceivedMotionEvent, requestMotionPermission } from './input/shake-manager';
-import { createShakeButton, showShakeButton } from './input/shake-button';
+import { initShake, updateGravityLerp, getShakeState, requestMotionPermission } from './input/shake-manager';
 import { prepareForCapture, captureScreenshots } from './capture/screenshot';
 import { createReplayBuffer, pushFrame, getOrderedFrames } from './capture/replay-buffer';
 import { encodeReplayGif } from './capture/gif-encoder';
@@ -189,12 +188,8 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // the fallback button handles those users.
   const shakeResult = await initShake(engine, scene);
 
-  // 9c. Fallback / permission handling
-  let isFallbackMode = shakeResult === 'denied' || shakeResult === 'unsupported';
-  let shakeBtn: HTMLButtonElement | null = null;
-
+  // 9c. iOS motion permission: show a one-time button to request access
   if (shakeResult === 'prompt') {
-    // iOS: need user gesture to request permission. Show a one-time button.
     const permBtn = document.createElement('button');
     permBtn.textContent = 'Tap to Enable Motion';
     permBtn.id = 'motion-permission-button';
@@ -208,34 +203,13 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
     });
     document.body.appendChild(permBtn);
     permBtn.addEventListener('click', async () => {
-      const granted = await requestMotionPermission();
+      await requestMotionPermission();
       permBtn.remove();
-      if (!granted) {
-        // Permission denied — show hold-to-shake fallback
-        isFallbackMode = true;
-        shakeBtn = createShakeButton(engine, scene);
-        document.body.appendChild(shakeBtn);
-        showShakeButton(shakeBtn);
-      }
     });
-  } else if (isFallbackMode) {
-    shakeBtn = createShakeButton(engine, scene);
-    document.body.appendChild(shakeBtn);
-    showShakeButton(shakeBtn);
-  } else {
-    // DeviceMotion "granted" but may never fire (desktop browsers).
-    setTimeout(() => {
-      if (!hasReceivedMotionEvent()) {
-        isFallbackMode = true;
-        shakeBtn = createShakeButton(engine, scene);
-        document.body.appendChild(shakeBtn);
-        showShakeButton(shakeBtn);
-      }
-    }, 1500);
   }
 
-  // 9d. Onboarding hint: "Shake your phone!" or "Hold the button to shake!"
-  const onboardingHint = showOnboardingHint(uiRoot, isFallbackMode);
+  // 9d. Onboarding hint
+  const onboardingHint = showOnboardingHint(uiRoot, false);
   let hintDismissed = false;
 
   // 9e. Capture button: always visible, triggers freeze -> capture -> preview flow
