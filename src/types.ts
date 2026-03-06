@@ -81,6 +81,27 @@ export interface VelocityTracker {
   positions: Array<{ x: number; y: number; time: number }>;
 }
 
+/** Shake detection state */
+export interface ShakeState {
+  supported: boolean;
+  permissionState: 'pending' | 'granted' | 'denied' | 'unsupported';
+  active: boolean;            // True when significant motion detected
+  smoothedX: number;          // EMA-smoothed accelerometer X
+  smoothedY: number;          // EMA-smoothed accelerometer Y
+  lastMagnitude: number;      // Magnitude of last smoothed reading
+  lastEventTime: number;      // Timestamp of last devicemotion event
+}
+
+/** Shake configuration constants */
+export interface ShakeConfig {
+  smoothingAlpha: number;       // EMA alpha (0-1), higher = more responsive
+  gravityScaleFactor: number;   // Converts m/s^2 to Matter.js gravity units
+  goofyMultiplier: number;      // Force multiplier for Goofy mode
+  lerpSpeed: number;            // Gravity return-to-default speed per frame
+  wakeThreshold: number;        // Magnitude delta from baseline to wake bodies
+  activeThreshold: number;      // Magnitude delta to consider "actively shaking"
+}
+
 /** Scene state */
 export interface SceneState {
   ragdolls: RagdollInstance[];

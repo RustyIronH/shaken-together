@@ -1,4 +1,4 @@
-import type { PhysicsMode, BodyPartConfig, JointConfig, AngleLimit, DollColorScheme, DollSize, CharacterId } from './types';
+import type { PhysicsMode, BodyPartConfig, JointConfig, AngleLimit, DollColorScheme, DollSize, CharacterId, ShakeConfig } from './types';
 
 // --- Physics Modes ---
 export const REALISTIC_MODE: PhysicsMode = {
@@ -107,6 +107,18 @@ export const VELOCITY_SAMPLE_COUNT = 5;
 
 // --- Character IDs (physics-layer constant, avoids importing from renderer) ---
 export const CHARACTER_IDS: CharacterId[] = ['slim', 'round', 'buff', 'tiny'];
+
+// --- Shake Configuration ---
+export const SHAKE_CONFIG: ShakeConfig = {
+  smoothingAlpha: 0.3,
+  gravityScaleFactor: 0.001 / 9.8,  // Normalize: 9.8 m/s^2 = default scale
+  goofyMultiplier: 2.0,
+  lerpSpeed: 0.05,                   // ~95% settled in ~1s at 60fps
+  wakeThreshold: 2.0,               // m/s^2 above resting magnitude
+  activeThreshold: 1.5,             // m/s^2 above resting for "active" flag
+};
+
+export const GRAVITY_RESTING_MAGNITUDE = 9.8;
 
 // --- Background Gradient ---
 export const BG_GRADIENT_TOP = '#1a1a2e';
