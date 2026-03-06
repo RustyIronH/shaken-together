@@ -188,22 +188,6 @@ function updateBoundaries(engine: import('matter-js').Engine, width: number, hei
   // the fallback button handles those users.
   const shakeResult = await initShake(engine, scene);
 
-  // DEBUG: temporary banner to diagnose motion issues (remove after fixing)
-  const dbg = document.createElement('div');
-  Object.assign(dbg.style, {
-    position: 'fixed', top: '0', left: '0', right: '0',
-    padding: '4px 8px', fontSize: '12px', fontFamily: 'monospace',
-    color: '#0f0', background: 'rgba(0,0,0,0.7)', zIndex: '9999',
-  });
-  let evtCount = 0;
-  dbg.textContent = `shake: ${shakeResult} | events: 0 | secure: ${window.isSecureContext}`;
-  document.body.appendChild(dbg);
-  window.addEventListener('devicemotion', (e) => {
-    evtCount++;
-    const a = e.accelerationIncludingGravity;
-    dbg.textContent = `shake: ${shakeResult} | events: ${evtCount} | x:${a?.x?.toFixed(1)} y:${a?.y?.toFixed(1)}`;
-  });
-
   // 9c. iOS motion permission: show a one-time button to request access
   if (shakeResult === 'prompt') {
     const permBtn = document.createElement('button');
