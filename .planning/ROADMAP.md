@@ -24,7 +24,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Rendering Engine** - PixiJS sprite rendering synced to physics, character sprites, mobile-first responsive canvas
 - [ ] **Phase 3: Device Input** - Shake detection via DeviceMotion, iOS permission flow, touch/drag fallback
 - [ ] **Phase 4: Screenshot Capture** - Screenshot of ragdoll positions with capture preview
-- [ ] **Phase 5: Replay Clips + Sharing** - Animated GIF replay recording, screenshot-or-clip chooser, Web Share API, OG meta previews
+- [x] **Phase 5: Replay Clips + Sharing** - Animated GIF replay recording, screenshot-or-clip chooser, Web Share API, OG meta previews (completed 2026-03-06)
 - [ ] **Phase 6: Infrastructure + Legal** - Content-friendly hosting, age gate, Terms of Service (parallel with Phases 1-5)
 - [ ] **Phase 7: User Accounts** - Email/password signup, login, session persistence, logout (parallel with Phases 1-5)
 - [ ] **Phase 8: Gallery Core** - Submit creations to public gallery, browse thumbnails, view full-size
@@ -107,9 +107,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Replay buffer + GIF encoder with TDD (gifenc, circular frame buffer, encoding)
-- [ ] 05-02-PLAN.md -- Share utility with Web Share API fallback chain, toast notifications, capture overlay rewrite with Photo/Clip tabs
-- [ ] 05-03-PLAN.md -- Main.ts wiring (replay buffer in ticker, capture flow update), human verification
+- [x] 05-01-PLAN.md -- Replay buffer + GIF encoder with TDD (gifenc, circular frame buffer, encoding)
+- [x] 05-02-PLAN.md -- Share utility with Web Share API fallback chain, toast notifications, capture overlay rewrite with Photo/Clip tabs
+- [x] 05-03-PLAN.md -- Main.ts wiring (replay buffer in ticker, capture flow update), human verification
 
 ### Phase 6: Infrastructure + Legal
 **Goal**: The app has content-friendly hosting, an age gate, and legal pages in place -- prerequisites for any public-facing deployment
@@ -191,7 +191,7 @@ Phases 1-5 execute sequentially. Phases 6-7 execute in parallel with 1-5. Phase 
 | 2. Rendering Engine | 4/4 | Complete | 2026-03-05 |
 | 3. Device Input | 1/2 | In Progress|  |
 | 4. Screenshot Capture | 0/2 | Not started | - |
-| 5. Replay Clips + Sharing | 0/3 | Not started | - |
+| 5. Replay Clips + Sharing | 3/3 | Complete   | 2026-03-06 |
 | 6. Infrastructure + Legal | 0/0 | Not started | - |
 | 7. User Accounts | 0/0 | Not started | - |
 | 8. Gallery Core | 0/0 | Not started | - |

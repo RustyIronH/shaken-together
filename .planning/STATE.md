@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Plan 05-03 Task 2 checkpoint (human-verify) — testing on Android phone, physics fixes applied
-last_updated: "2026-03-06T06:00:00.000Z"
-last_activity: 2026-03-06 -- Phase 5 execution paused during UAT on Android device
+stopped_at: Completed 05-03-PLAN.md — Phase 5 fully complete
+last_updated: "2026-03-06T03:19:00.000Z"
+last_activity: 2026-03-06 -- Phase 5 Plan 03 completed (human-verify auto-approved)
 progress:
   total_phases: 10
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 15
-  completed_plans: 14
-  percent: 93
+  completed_plans: 15
+  percent: 100
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** Shaking the phone must feel satisfying and the ragdolls must land in funny, sharable positions
-**Current focus:** Phase 5: Replay Clips + Sharing (in progress)
+**Current focus:** Phase 5 complete. Next: Phase 6 (Infrastructure + Legal)
 
 ## Current Position
 
-Phase: 5 of 10 (Replay Clips + Sharing)
-Plan: 3 of 3
-Status: Plan 05-03 Task 2 checkpoint (human-verify on Android)
-Last activity: 2026-03-06 -- Physics/gravity fixes during Phase 5 UAT
+Phase: 5 of 10 (Replay Clips + Sharing) -- COMPLETE
+Plan: 3 of 3 -- COMPLETE
+Status: Phase 5 fully complete, all 3 plans finished
+Last activity: 2026-03-06 -- Phase 5 Plan 03 completed (human-verify auto-approved)
 
-Progress: [█████████░] 93%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 4min
-- Total execution time: 0.68 hours
+- Total plans completed: 15
+- Average duration: 3min
+- Total execution time: 0.75 hours
 
 **By Phase:**
 
@@ -58,9 +58,10 @@ Progress: [█████████░] 93%
 | 04 | P02 | 2min | 3 | 2 |
 | 05 | P01 | 3min | 2 | 6 |
 | 05 | P02 | 4min | 2 | 4 |
+| 05 | P03 | 2min | 2 | 5 |
 
 **Recent Trend:**
-- Last 5 plans: 2min, 2min, 2min, 3min, 4min
+- Last 5 plans: 2min, 2min, 3min, 4min, 2min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -116,6 +117,10 @@ Recent decisions affecting current work:
 - [Phase 05]: BUFFER_CAPACITY exported as named constant for test access and future configuration
 - [Phase 05]: Simplified overlay callbacks to single onDismiss -- Share/Save handle file ops internally
 - [Phase 05]: setGifBlob return handle pattern for late-arriving async GIF data in overlay
+- [Phase 05]: GPU readback (extract.pixels) must run outside render ticker on mobile -- setInterval avoids frame drops
+- [Phase 05]: Replay buffer tuned for mobile: 5fps at quarter resolution (not 10fps half-res)
+- [Phase 05]: Gravity scale factor 1/9.8 (accelerometer values are m/s^2, not raw sensor units)
+- [Phase 05]: Accelerometer axis mapping: gravity.x = -smoothedX * scale, gravity.y = smoothedY * scale
 
 ### Pending Todos
 
@@ -129,7 +134,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T06:00:00.000Z
-Stopped at: Plan 05-03 Task 2 checkpoint — all 3 plans code-complete, testing overlay/capture on Android
-Resume: Re-run `/gsd:execute-phase 5` to resume from checkpoint, or manually test and type "approved"
-Notes: Several physics fixes applied during UAT (gravity scale, axis mapping, angle limits, perf). Ragdoll joint limits still too floppy per user — revisit later.
+Last session: 2026-03-06T03:19:00.000Z
+Stopped at: Completed 05-03-PLAN.md -- Phase 5 fully complete
+Resume: Start Phase 6 (Infrastructure + Legal) or Phase 7 (User Accounts)
+Notes: Phase 5 complete. All replay clips + sharing features working on Android. Ragdoll joint limits still slightly loose per user -- revisit in future polish pass.
