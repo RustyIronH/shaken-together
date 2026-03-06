@@ -111,13 +111,13 @@ Plans:
 - [x] 05-03-PLAN.md -- Main.ts wiring (replay buffer in ticker, capture flow update), human verification
 
 ### Phase 6: Infrastructure + Legal
-**Goal**: The app has content-friendly hosting, an age gate, and legal pages in place -- prerequisites for any public-facing deployment
+**Goal**: The app is deployed on content-friendly hosting with a full-stack Docker container (Node.js/Express + Vite frontend + SQLite) on a VPS at shaken.ironhaven.com.au
 **Depends on**: Nothing (parallel with Phases 1-5)
-**Requirements**: INFR-01, INFR-02, INFR-03
+**Requirements**: INFR-03
 **Success Criteria** (what must be TRUE):
-  1. App is deployed on hosting infrastructure whose Terms of Service explicitly permit adult/explicit cartoon content
-  2. First-time visitors see an age gate requiring them to confirm they are 18+ before accessing any app content
-  3. A Terms of Service page is accessible from within the app and covers content liability, user responsibilities, and explicit content notice
+  1. App is deployed in a Docker container on a VPS and accessible at shaken.ironhaven.com.au
+  2. Single container serves both the Vite frontend and Express backend API from the same origin
+  3. HTTPS is configured with valid certificate
 **Plans**: TBD
 
 Plans:
@@ -126,7 +126,7 @@ Plans:
 
 ### Phase 7: User Accounts
 **Goal**: Users can create accounts, log in, and maintain sessions -- required for gallery submissions and rating integrity
-**Depends on**: Phase 6 (needs Supabase backend infrastructure)
+**Depends on**: Phase 6 (needs backend infrastructure)
 **Requirements**: ACCT-01, ACCT-02, ACCT-03
 **Success Criteria** (what must be TRUE):
   1. User can create an account with email and password

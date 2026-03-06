@@ -63,8 +63,6 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Legal/Infra
 
-- [ ] **INFR-01**: Age gate shown before accessing the app (users must confirm 18+)
-- [ ] **INFR-02**: Terms of Service page accessible from the app
 - [ ] **INFR-03**: App hosted on content-friendly infrastructure (no mainstream provider ToS violations)
 
 ## v2 Requirements
@@ -130,8 +128,6 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAPT-03 | Phase 5: Replay Clips + Sharing | Complete |
 | SHAR-01 | Phase 5: Replay Clips + Sharing | Complete |
 | SHAR-02 | Phase 8: Gallery Core | Pending |
-| INFR-01 | Phase 6: Infrastructure + Legal | Pending |
-| INFR-02 | Phase 6: Infrastructure + Legal | Pending |
 | INFR-03 | Phase 6: Infrastructure + Legal | Pending |
 | ACCT-01 | Phase 7: User Accounts | Pending |
 | ACCT-02 | Phase 7: User Accounts | Pending |
@@ -146,7 +142,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PLAT-02 | Phase 10: PWA + Android APK | Pending |
 
 **Coverage:**
-- v1 requirements: 33 total
+- v1 requirements: 31 total
 - Mapped to phases: 33
 - Unmapped: 0
 
